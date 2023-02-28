@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hive.Counter
+namespace Hive.Utility
 {
-    internal class AntCounter : Counter
+    internal class Counter
     {
     }
 }
