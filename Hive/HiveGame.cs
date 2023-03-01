@@ -14,7 +14,7 @@ namespace Hive
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<IEntity> entities;
+        private List<IEntity> entities = new List<IEntity>();
 
         private ContentLoader contentLoader;
         private Counter antCounter;
@@ -23,6 +23,9 @@ namespace Hive
         private ExpansionShop expansionShop;
         private HiveMap hiveMap;
         private DropManager dropManager;
+
+        public static int screenSizeX = 720;
+        public static int screenSizeY = 480;
 
         public HiveGame()
         {
@@ -34,7 +37,11 @@ namespace Hive
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            entities = new List<IEntity>();
+            
+            _graphics.IsFullScreen = false;
+            _graphics.PreferredBackBufferWidth = screenSizeX;
+            _graphics.PreferredBackBufferHeight = screenSizeY;
+            _graphics.ApplyChanges();
 
             base.Initialize();
         }
@@ -44,35 +51,42 @@ namespace Hive
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             contentLoader = new ContentLoader(this);
 
-            this.antCounter = new Counter(contentLoader.counterTexture, Vector2.One);
-            entities.Add(antCounter);
+            //this.antCounter = new Counter(contentLoader.counterTexture, Vector2.One);
+            //entities.Add(antCounter);
 
             this.nectarCounter = new Counter(contentLoader.counterTexture, Vector2.One);
             entities.Add(nectarCounter);
 
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter);
-            entities.Add(antShop);
+            //this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter);
+            //entities.Add(antShop);
 
-            this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
-            entities.Add(expansionShop);
+            //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
+            //entities.Add(expansionShop);
 
-            this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One);
-            entities.Add(hiveMap);
+            //this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One, contentLoader);
+            //entities.Add(hiveMap);
 
-            this.dropManager = new DropManager(nectarCounter);
+            this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);
 
             // TODO: use this.Content to load your game content here
         }
 
+        public void Quit()
+        {
+            this.Exit();
+        }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+                this.Quit();
 
             // TODO: Add your update logic here
 
             base.Update(gameTime);
+            InputManager.Update(gameTime);
+
             foreach (IEntity entity in entities)
             {
                 entity.Update(gameTime);
@@ -90,7 +104,9 @@ namespace Hive
             {
                 entity.Draw(gameTime, _spriteBatch);
             }
+
             _spriteBatch.End();
+
             base.Draw(gameTime);
         }
     }

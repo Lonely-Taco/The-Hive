@@ -7,7 +7,7 @@ namespace Hive.Drops
 {
     internal class GoldenNectarDrop : NectarDrop
     {
-        public GoldenNectarDrop(Counter nectarCounter, Texture2D texture, Vector2 position) : base(nectarCounter, 0, texture, position)
+        public GoldenNectarDrop(Counter nectarCounter, Texture2D texture, Vector2 position, DropManager dropManager) : base(nectarCounter, 0, texture, position, dropManager)
         {
 
         }
