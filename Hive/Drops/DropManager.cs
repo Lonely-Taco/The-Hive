@@ -17,6 +17,7 @@ namespace Hive.Drops
         private Counter nectarCounter;
         private int regularDropValue;
         private List<NectarDrop> dropList = new List<NectarDrop>();
+
         private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
         private float elapsedDropSpawnTime = 0;
         private float _dropSpawnTimeInterval = 5;

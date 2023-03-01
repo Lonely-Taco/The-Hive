@@ -49,7 +49,7 @@ namespace Hive.Utility
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }
