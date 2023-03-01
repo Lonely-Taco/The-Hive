@@ -16,7 +16,7 @@ namespace Hive.Drops
         private double goldenDropChance;
         private Counter nectarCounter;
         private int regularDropValue;
-        private List<NectarDrop> dropList;
+        private List<NectarDrop> dropList = new List<NectarDrop>();
 
         public DropManager(Counter nectarCounter)
         {

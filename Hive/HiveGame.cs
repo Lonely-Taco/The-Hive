@@ -14,7 +14,7 @@ namespace Hive
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private List<IEntity> entities;
+        private List<IEntity> entities = new List<IEntity>();
 
         private ContentLoader contentLoader;
         private Counter antCounter;
@@ -56,7 +56,7 @@ namespace Hive
             this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
             entities.Add(expansionShop);
 
-            this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One);
+            this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One, contentLoader);
             entities.Add(hiveMap);
 
             this.dropManager = new DropManager(nectarCounter);
@@ -90,6 +90,7 @@ namespace Hive
             {
                 entity.Draw(gameTime, _spriteBatch);
             }
+
             _spriteBatch.End();
             base.Draw(gameTime);
         }

@@ -13,8 +13,8 @@ namespace Hive.Map
 {
     internal class HiveMap : DrawnEntity
     {
-        private List<AntObject> ants;
-        private List<NectarObject> nectarList;
+        private List<AntObject> ants = new List<AntObject>();
+        private List<NectarObject> nectarList = new List<NectarObject>();
 
         private Counter antCounter;
         private Counter nectarCounter;
@@ -24,11 +24,15 @@ namespace Hive.Map
         private int height;
         private float dropChance;
 
-        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position) : base(texture, position)
+        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position)
         {
             this.width = width;
             this.height = height;
             this.dropChance = dropChance;
+
+            antCounter = new Counter(content.antTexture, new Vector2(200, 100));
+            nectarCounter = new Counter(content.nectarTexture, new Vector2(200, 150));
+            expansionCounter = new Counter(content.buyButtonTexture, new Vector2(200, 200));
         }
 
         public void SpawnNectar()
@@ -58,7 +62,7 @@ namespace Hive.Map
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
