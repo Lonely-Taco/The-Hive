@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Hive.Utility
 {
-    internal class Counter
+    public class Counter
     {
+        public Task<int> AddCount(int addedInteger)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
