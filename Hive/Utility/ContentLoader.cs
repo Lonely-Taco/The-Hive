@@ -16,6 +16,7 @@ namespace Hive.Utility
         public Texture2D antTexture;
         public Texture2D counterTexture;
         public Texture2D buyButtonTexture;
+        public Texture2D shopBackgroundTexture;
 
         public SpriteFont counterFont;
 
@@ -28,6 +29,7 @@ namespace Hive.Utility
             antTexture = game.Content.Load<Texture2D>("Textures/Ant");
             counterTexture = game.Content.Load<Texture2D>("Textures/Missing");
             buyButtonTexture = game.Content.Load<Texture2D>("Textures/BuyButton");
+            shopBackgroundTexture = game.Content.Load<Texture2D>("Textures/Button");
 
             counterFont = game.Content.Load<SpriteFont>("Fonts/DefaultFont");
         }

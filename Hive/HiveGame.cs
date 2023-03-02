@@ -59,8 +59,10 @@ namespace Hive
             this.nectarCounter = new Counter(contentLoader.counterTexture, Vector2.One, contentLoader.counterFont);
             entities.Add(nectarCounter);
 
-            //this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter);
-            //entities.Add(antShop);
+            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, 
+                                        contentLoader.buyButtonTexture, contentLoader.shopBackgroundTexture, 
+                                        new Vector2(50, 50), contentLoader.counterFont);
+            entities.Add(antShop);
 
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
             //entities.Add(expansionShop);

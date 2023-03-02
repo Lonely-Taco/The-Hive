@@ -9,23 +9,26 @@ using static System.Formats.Asn1.AsnWriter;
 
 namespace Hive.Common
 {
-    public abstract class DrawnEntity : IEntity
+    public class DrawnEntity : IEntity
     {
         protected Texture2D texture;
         protected Vector2 position;
-
-        protected DrawnEntity(Texture2D texture, Vector2 position)
+        protected Vector2 scale;
+        public DrawnEntity(Texture2D texture, Vector2 position)
         {
             this.texture = texture;
             this.position = position;
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1)
         {
-            spriteBatch.Draw(texture, position, Color.White);
+            spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 0);
         }
 
-        public abstract void Update(GameTime gameTime);
+        public virtual void Update(GameTime gameTime)
+        {
+
+        }
 
     }
 }

@@ -15,6 +15,7 @@ namespace Hive.Common
 
         private MouseState currentMouseState;
         private MouseState previousMouseState;
+        protected bool isHovering = false;
 
         public event EventHandler Click;
         public Rectangle Rectangle
@@ -39,12 +40,17 @@ namespace Hive.Common
         {
             if (InputManager.MouseRectangleBounds.Intersects(Rectangle))
             {
+                isHovering = true;
                 //Hovering logic here?
 
                 if (InputManager.Clicked)
                 {
                     Click?.Invoke(this, new EventArgs());
                 }
+            }
+            else
+            { 
+                isHovering = false;
             }
         }
     }

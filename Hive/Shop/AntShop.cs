@@ -1,4 +1,5 @@
 ﻿using Hive.Utility;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,8 @@ namespace Hive.Shop
     {
         private Counter antCounter;
 
-        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter) : base(icon, nectarCounter)
+        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font)
+            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font)
         {
             this.antCounter = antCounter;
         }
@@ -27,5 +29,7 @@ namespace Hive.Shop
         {
             return 5 * currentAmount; //TODO: change later
         }
+
+
     }
 }

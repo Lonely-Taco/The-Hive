@@ -58,7 +58,7 @@ namespace Hive.Utility
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1)
         {
             spriteBatch.DrawString(font, count.ToString(), position, color);
             base.Draw(gameTime, spriteBatch);

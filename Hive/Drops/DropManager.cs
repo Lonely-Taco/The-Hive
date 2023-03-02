@@ -4,9 +4,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hive.Drops
 {
@@ -19,7 +16,7 @@ namespace Hive.Drops
         private List<NectarDrop> dropList = new List<NectarDrop>();
         private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
         private float elapsedDropSpawnTime = 0;
-        private float _dropSpawnTimeInterval = 5;
+        private float _dropSpawnTimeInterval = 1;
 
         private Texture2D dropTexture;
 
@@ -97,11 +94,11 @@ namespace Hive.Drops
             dropsToBeRemoved.Clear();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1)
         {
             foreach (NectarDrop drop in dropList)
             {
-                drop.Draw(gameTime, spriteBatch);
+                drop.Draw(gameTime, spriteBatch, scale);
             }
         }
     }
