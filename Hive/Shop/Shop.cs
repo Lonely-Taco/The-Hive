@@ -10,30 +10,32 @@ using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
-namespace Hive.Shop
+namespace Hive.Shops
 {
     public abstract class Shop : DrawnEntity
     {
         protected Counter nectarCounter;
-        protected Button buyButton;
         protected Vector2 iconOffset = new Vector2(0, 10);
+        protected Button buyButton;
         protected Vector2 buyButtonOffset = new Vector2(50, 10);
         protected DrawnEntity icon;
-        protected DrawnEntity costIcon;
         protected Vector2 costIconOffset = new Vector2(0, 30);
         protected Vector2 costTextOffset = new Vector2(0, 20);
-        protected SpriteFont font;
+        protected DrawnEntity costIcon;
         protected Counter counter;
 
+        protected static SpriteFont font;
+        protected static Texture2D backgroundTexture;
+        protected static Texture2D buttonTexture;
+        protected static Texture2D nectarTexture;
 
-        protected Shop(Texture2D icon, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font, Texture2D costIcon, Counter counter) : base(backgroundTexture, position)
+        protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter) : base(Shop.backgroundTexture, position)
         {
             this.icon = new DrawnEntity(icon, position + iconOffset);
             this.nectarCounter = nectarCounter;
             this.buyButton = new Button(buttonTexture, position + buyButtonOffset, "Buy", font);
-            this.costIcon = new DrawnEntity(costIcon, position + costIconOffset);
+            this.costIcon = new DrawnEntity(nectarTexture, position + costIconOffset);
             this.counter = counter;
-            this.font = font;
         }
 
         public abstract int CurrentCost();
@@ -53,6 +55,14 @@ namespace Hive.Shop
         public override void Update(GameTime gameTime)
         {
             buyButton.Update(gameTime);
+        }
+
+        public static void Initialize(SpriteFont font, Texture2D buttonTexture, Texture2D nectarTexture, Texture2D backgroundTexture)
+        {
+            Shop.font = font;
+            Shop.buttonTexture = buttonTexture;
+            Shop.nectarTexture = nectarTexture;
+            Shop.backgroundTexture = backgroundTexture;
         }
     }
 }

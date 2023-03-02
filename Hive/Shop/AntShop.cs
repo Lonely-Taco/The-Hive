@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hive.Shop
+namespace Hive.Shops
 {
     internal class AntShop : Shop
     {
 
-        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font, Texture2D costIcon)
-            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font, costIcon, antCounter)
+        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Vector2 position)
+            : base(icon, nectarCounter, position, antCounter)
         {
 
         }

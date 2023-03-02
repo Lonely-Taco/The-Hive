@@ -1,5 +1,5 @@
 ﻿using Hive.Map;
-using Hive.Shop;
+using Hive.Shops;
 using Hive.Drops;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -53,15 +53,16 @@ namespace Hive
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             contentLoader = new ContentLoader(this);
 
-            this.antCounter = new Counter(contentLoader.counterTexture, Vector2.One, contentLoader.counterFont);
+            Shop.Initialize(contentLoader.counterFont, contentLoader.buyButtonTexture, contentLoader.nectarTexture, contentLoader.shopBackgroundTexture);
+            Counter.Initialize(contentLoader.backgroundTexture, contentLoader.counterFont);
+
+            this.antCounter = new Counter(new Vector2(10, 100));
             entities.Add(antCounter);
 
-            this.nectarCounter = new Counter(contentLoader.counterTexture, Vector2.One, contentLoader.counterFont);
+            this.nectarCounter = new Counter(Vector2.One);
             entities.Add(nectarCounter);
 
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, 
-                                        contentLoader.buyButtonTexture, contentLoader.shopBackgroundTexture, 
-                                        new Vector2(50, 50), contentLoader.counterFont, contentLoader.nectarTexture);
+            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(50, 50));
             entities.Add(antShop);
 
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);

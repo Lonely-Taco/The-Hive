@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hive.Shop
+namespace Hive.Shops
 {
     internal class ExpansionShop : Shop
     {
-        public ExpansionShop(Texture2D icon, Counter expansionCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font, Texture2D costIcon) 
-            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font, costIcon, expansionCounter)
+        public ExpansionShop(Texture2D icon, Counter expansionCounter, Counter nectarCounter, Vector2 position) 
+            : base(icon, nectarCounter, position, expansionCounter)
         {
 
         }

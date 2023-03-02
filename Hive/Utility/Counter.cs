@@ -15,14 +15,15 @@ namespace Hive.Utility
     {
         private SemaphoreSlim semaphore;
         private int count;
-        private SpriteFont font;
         private Color color;
 
-        public Counter(Texture2D texture, Vector2 position, SpriteFont font) : base(texture, position)
+        protected static Texture2D backgroundTexture;
+        protected static SpriteFont font;
+
+        public Counter(Vector2 position) : base(Counter.backgroundTexture, position)
         {
             count = 0;
             semaphore = new SemaphoreSlim(1);
-            this.font = font;
             this.color = Color.Black;
         }
 
@@ -62,6 +63,12 @@ namespace Hive.Utility
         {
             spriteBatch.DrawString(font, count.ToString(), position, color);
             base.Draw(gameTime, spriteBatch);
+        }
+
+        public static void Initialize(Texture2D backgroundTexture, SpriteFont font)
+        {
+            Counter.backgroundTexture = backgroundTexture;
+            Counter.font = font;
         }
     }
 }
