@@ -44,6 +44,18 @@
 /processorParam:TextureFormat=Color
 /build:Textures/AntMap.png
 
+#begin Textures/background.jpg
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/background.jpg;Textures/Background.jpg
+
 #begin Textures/Button.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -92,18 +104,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/Grass.png
 
-#begin Textures/MediumContainer.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/MediumContainer.png
-
 #begin Textures/Missing.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -127,16 +127,4 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Nectar.png
-
-#begin Textures/SmallContainer.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Textures/SmallContainer.png
 
