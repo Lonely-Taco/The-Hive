@@ -34,6 +34,7 @@ namespace Hive
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            //hiveMap = new HiveMap(this);
         }
 
         protected override void Initialize()
