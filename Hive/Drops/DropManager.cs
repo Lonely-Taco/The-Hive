@@ -47,13 +47,17 @@ namespace Hive.Drops
             float chance = rnd.Next(0, 100)/100f;
             if(chance <= dropChance)
             {
-                if(chance <= goldenDropChance)
+                Vector2 spawnCoords = new Vector2(
+                    rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)), 
+                    rnd.Next((int)(HiveGame.screenSizeY * 0.1f), (int)(HiveGame.screenSizeY * 0.5f)));
+
+                if (chance <= goldenDropChance)
                 {
-                    return new GoldenNectarDrop(nectarCounter, dropTexture, new Vector2(rnd.Next(0,200), rnd.Next(0, 200)), this); //TODO: replace null and default position
+                    return new GoldenNectarDrop(nectarCounter, dropTexture, spawnCoords, this);
                 }
                 else
                 {
-                    return new NectarDrop(nectarCounter, regularDropValue, dropTexture, new Vector2(rnd.Next(0, 200), rnd.Next(0, 200)), this); //TODO: replace null and default position
+                    return new NectarDrop(nectarCounter, regularDropValue, dropTexture, spawnCoords, this);
                 }
             }
             return null;
@@ -94,11 +98,11 @@ namespace Hive.Drops
             dropsToBeRemoved.Clear();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             foreach (NectarDrop drop in dropList)
             {
-                drop.Draw(gameTime, spriteBatch, scale);
+                drop.Draw(gameTime, spriteBatch);
             }
         }
     }

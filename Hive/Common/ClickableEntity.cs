@@ -22,11 +22,11 @@ namespace Hive.Common
         {
             get
             {
-                return new Rectangle((int)position.X, (int)position.Y, texture.Width, texture.Height);
+                return new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
             }
         }
 
-        protected ClickableEntity(Texture2D texture, Vector2 position) : base(texture, position)
+        protected ClickableEntity(Texture2D texture, Vector2 position, float scale) : base(texture, position, scale)
         {
 
         }

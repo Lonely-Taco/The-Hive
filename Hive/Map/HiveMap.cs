@@ -25,16 +25,16 @@ namespace Hive.Map
         private int height;
         private float dropChance;
 
-        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position)
+        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position, 1f)
         {
             this.content = content;
             this.width = width;
             this.height = height;
             this.dropChance = dropChance;
 
-            //antCounter = new Counter(this.content.antTexture, new Vector2(100, 100));
-            //nectarCounter = new Counter(this.content.nectarTexture, new Vector2(100, 150));
-            //expansionCounter = new Counter(this.content.buyButtonTexture, new Vector2(200, 200));
+            antCounter = new Counter(new Vector2(100, 100));
+            nectarCounter = new Counter(new Vector2(100, 150));
+            expansionCounter = new Counter(new Vector2(200, 200));
         }
 
         public void SpawnNectar()
@@ -67,7 +67,7 @@ namespace Hive.Map
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
 
