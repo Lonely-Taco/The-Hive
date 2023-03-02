@@ -12,9 +12,10 @@ namespace Hive.Drops
 
         }
 
-        public new async Task Claim()
+        public override async void Claim()
         {
             await nectarCounter.DoubleNectar();
+            dropManager.RemoveDrop(this);
         }
     }
 }

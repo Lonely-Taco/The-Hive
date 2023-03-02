@@ -25,12 +25,12 @@ namespace Hive.Drops
             this.Click += OnClick;
         }
 
-        private void OnClick(object sender, EventArgs e)
+        protected void OnClick(object sender, EventArgs e)
         {
             Task.Factory.StartNew(Claim);
         }
 
-        public async void Claim()
+        public virtual async void Claim()
         {
             await nectarCounter.AddCount(nectarValue);
             dropManager.RemoveDrop(this);
