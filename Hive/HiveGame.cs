@@ -26,8 +26,8 @@ namespace Hive
         private HiveMap hiveMap;
         private DropManager dropManager;
 
-        public static int screenSizeX = 720;
-        public static int screenSizeY = 480;
+        public static int screenSizeX = 1920;
+        public static int screenSizeY = 1080;
 
         public HiveGame()
         {
@@ -69,8 +69,9 @@ namespace Hive
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
             //entities.Add(expansionShop);
 
-            //this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One, contentLoader);
-            //entities.Add(hiveMap);
+
+            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(1350, 512), contentLoader);
+            entities.Add(hiveMap);
 
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);

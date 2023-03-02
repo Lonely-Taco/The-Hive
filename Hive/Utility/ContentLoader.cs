@@ -24,7 +24,7 @@ namespace Hive.Utility
         {
             nectarTexture = game.Content.Load<Texture2D>("Textures/Nectar");
             shopTexture = game.Content.Load<Texture2D>("Textures/Missing");
-            mapTexture = game.Content.Load<Texture2D>("Textures/Grass");
+            mapTexture = game.Content.Load<Texture2D>("Textures/AntMap");
             backgroundTexture = game.Content.Load<Texture2D>("Textures/missing");
             antTexture = game.Content.Load<Texture2D>("Textures/Ant");
             counterTexture = game.Content.Load<Texture2D>("Textures/Missing");
