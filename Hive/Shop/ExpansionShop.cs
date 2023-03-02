@@ -11,22 +11,21 @@ namespace Hive.Shop
 {
     internal class ExpansionShop : Shop
     {
-        private Counter expansionCounter;
-        public ExpansionShop(Texture2D icon, Counter expansionCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font) 
-            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font)
+        public ExpansionShop(Texture2D icon, Counter expansionCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font, Texture2D costIcon) 
+            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font, costIcon, expansionCounter)
         {
-            this.expansionCounter = expansionCounter;
+
         }
 
         public async override void Buy()
         {
-            int expansionLevel = await expansionCounter.AddCount(1);
-            await nectarCounter.AddCount(-CurrentCost(expansionLevel));
+            await nectarCounter.AddCount(-CurrentCost());
+            int expansionLevel = await counter.AddCount(1);
         }
 
-        public override int CurrentCost(int currentAmount)
+        public override int CurrentCost()
         {
-            return currentAmount * 5; //TODO: change later
+            return counter.GetCount() * 5; //TODO: change later
         }
     }
 }

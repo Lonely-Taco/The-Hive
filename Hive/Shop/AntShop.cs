@@ -11,23 +11,22 @@ namespace Hive.Shop
 {
     internal class AntShop : Shop
     {
-        private Counter antCounter;
 
-        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font)
-            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font)
+        public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Texture2D buttonTexture, Texture2D backgroundTexture, Vector2 position, SpriteFont font, Texture2D costIcon)
+            : base(icon, nectarCounter, buttonTexture, backgroundTexture, position, font, costIcon, antCounter)
         {
-            this.antCounter = antCounter;
+
         }
 
         public async override void Buy()
         {
-            int antAmount = await antCounter.AddCount(1);
-            await nectarCounter.AddCount(-CurrentCost(antAmount));
+            await nectarCounter.AddCount(-CurrentCost());
+            int antAmount = await counter.AddCount(1);
         }
 
-        public override int CurrentCost(int currentAmount)
+        public override int CurrentCost()
         {
-            return 5 * currentAmount; //TODO: change later
+            return 5 * counter.GetCount(); //TODO: change later
         }
 
 
