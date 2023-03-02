@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Hive.Utility
 {
@@ -14,10 +15,15 @@ namespace Hive.Utility
     {
         private SemaphoreSlim semaphore;
         private int count;
-        public Counter(Texture2D texture, Vector2 position) : base(texture, position)
+        private SpriteFont font;
+        private Color color;
+
+        public Counter(Texture2D texture, Vector2 position, SpriteFont font) : base(texture, position)
         {
             count = 0;
             semaphore = new SemaphoreSlim(1);
+            this.font = font;
+            this.color = Color.Black;
         }
 
         public async Task<int> AddCount(int addedInteger)
@@ -50,6 +56,12 @@ namespace Hive.Utility
         public override void Update(GameTime gameTime)
         {
             //throw new NotImplementedException();
+        }
+
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        {
+            spriteBatch.DrawString(font, count.ToString(), position, color);
+            base.Draw(gameTime, spriteBatch);
         }
     }
 }

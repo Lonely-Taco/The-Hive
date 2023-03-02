@@ -12,12 +12,11 @@ namespace Hive.Drops
 {
     public class DropManager : IEntity
     {
-        private double dropChance = 0.5;
-        private double goldenDropChance = 0.1;
+        private float dropChance = 0.5f;
+        private float goldenDropChance = 0.1f;
         private Counter nectarCounter;
         private int regularDropValue;
         private List<NectarDrop> dropList = new List<NectarDrop>();
-
         private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
         private float elapsedDropSpawnTime = 0;
         private float _dropSpawnTimeInterval = 5;
@@ -48,7 +47,7 @@ namespace Hive.Drops
         public NectarDrop SpawnRandomDrop()
         {
             Random rnd = new Random();
-            float chance = rnd.Next(0, 1);
+            float chance = rnd.Next(0, 100)/100f;
             if(chance <= dropChance)
             {
                 if(chance <= goldenDropChance)
@@ -95,6 +94,7 @@ namespace Hive.Drops
             {
                 dropList.Remove(drop);
             }
+            dropsToBeRemoved.Clear();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)

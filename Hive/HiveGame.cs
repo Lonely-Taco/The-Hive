@@ -7,6 +7,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using Hive.Common;
 using Hive.Utility;
+using System.Drawing;
+using Color = Microsoft.Xna.Framework.Color;
 
 namespace Hive
 {
@@ -51,10 +53,10 @@ namespace Hive
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             contentLoader = new ContentLoader(this);
 
-            //this.antCounter = new Counter(contentLoader.counterTexture, Vector2.One);
+            //this.antCounter = new Counter(contentLoader.counterTexture, Vector2.One, contentLoader.counterFont);
             //entities.Add(antCounter);
 
-            this.nectarCounter = new Counter(contentLoader.counterTexture, Vector2.One);
+            this.nectarCounter = new Counter(contentLoader.counterTexture, Vector2.One, contentLoader.counterFont);
             entities.Add(nectarCounter);
 
             //this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter);
@@ -63,8 +65,8 @@ namespace Hive
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
             //entities.Add(expansionShop);
 
-            this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One, contentLoader);
-            entities.Add(hiveMap);
+            //this.hiveMap = new HiveMap(100, 100, 0.05f, contentLoader.mapTexture, Vector2.One, contentLoader);
+            //entities.Add(hiveMap);
 
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);
@@ -100,6 +102,7 @@ namespace Hive
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
+
             foreach (IEntity entity in entities)
             {
                 entity.Draw(gameTime, _spriteBatch);
