@@ -18,12 +18,6 @@ namespace Hive.Shops
 
         }
 
-        public async override void Buy()
-        {
-            await nectarCounter.AddCount(-CurrentCost());
-            int antAmount = await counter.AddCount(1);
-        }
-
         public override int CurrentCost()
         {
             return 5 * counter.GetCount(); //TODO: change later

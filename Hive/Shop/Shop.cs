@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
@@ -17,7 +18,7 @@ namespace Hive.Shops
         protected Counter nectarCounter;
         protected Vector2 iconOffset = new Vector2(0, 10);
         protected Button buyButton;
-        protected Vector2 buyButtonOffset = new Vector2(50, 10);
+        protected Vector2 buyButtonOffset = new Vector2(108, 3);
         protected DrawnEntity icon;
         protected Vector2 costIconOffset = new Vector2(0, 30);
         protected Vector2 costTextOffset = new Vector2(0, 20);
@@ -36,15 +37,28 @@ namespace Hive.Shops
             this.buyButton = new Button(buttonTexture, position + buyButtonOffset, "Buy", font);
             this.costIcon = new DrawnEntity(nectarTexture, position + costIconOffset);
             this.counter = counter;
+            buyButton.Click += OnClick;
+
+        }
+
+        protected void OnClick(object sender, EventArgs e)
+        {
+            Task.Factory.StartNew(Buy);
         }
 
         public abstract int CurrentCost();
 
-        public abstract void Buy();
+        public virtual async void Buy()
+        {
+            if (await nectarCounter.AddCount(-CurrentCost()))
+            {
+                await counter.AddCount(1);
+            }
+        }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1f)
         {
-            base.Draw(gameTime, spriteBatch, 0.5f * scale);
+            base.Draw(gameTime, spriteBatch, 0.3f * scale);
             icon.Draw(gameTime, spriteBatch, 0.9f * scale);
             costIcon.Draw(gameTime, spriteBatch, 0.9f * scale);
             //Cost string
@@ -64,5 +78,6 @@ namespace Hive.Shops
             Shop.nectarTexture = nectarTexture;
             Shop.backgroundTexture = backgroundTexture;
         }
+
     }
 }

@@ -27,13 +27,22 @@ namespace Hive.Utility
             this.color = Color.Black;
         }
 
-        public async Task<int> AddCount(int addedInteger)
+        public async Task<bool> AddCount(int value)
         {
             await semaphore.WaitAsync();
-            count = count + addedInteger;
-            semaphore.Release();
-            return count;
+            if (count + value < 0)
+            {
+                semaphore.Release();
+                return false;
+            }
+            else
+            {
+                count += value;
+                semaphore.Release();
+                return true;
+            }
         }
+
         public async Task<int> DoubleNectar()
         {
             await semaphore.WaitAsync();
