@@ -21,6 +21,7 @@ namespace Hive
         private ContentLoader contentLoader;
         private Counter antCounter;
         private Counter nectarCounter;
+        private Counter expansionCounter;
         private AntShop antShop;
         private ExpansionShop expansionShop;
         private HiveMap hiveMap;
@@ -54,24 +55,30 @@ namespace Hive
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             contentLoader = new ContentLoader(this);
 
-            Shop.Initialize(contentLoader.counterFont, contentLoader.buyButtonTexture, contentLoader.nectarTexture, contentLoader.containerTexture);
+            Shop.Initialize(contentLoader.counterFont, 
+                            contentLoader.buyButtonTexture, 
+                            contentLoader.nectarTexture, 
+                            contentLoader.containerTexture,
+                            contentLoader.costBackgroundTexture);
             Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
+
+            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader);
+            entities.Add(hiveMap);
 
             this.antCounter = new Counter(new Vector2(00, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);
 
-            this.nectarCounter = new Counter(new Vector2(0, 50), contentLoader.nectarTexture, 1f);
+            this.nectarCounter = new Counter(new Vector2(0, 57), contentLoader.nectarTexture, 1f);
             entities.Add(nectarCounter);
 
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 150));
+            this.expansionCounter = new Counter(new Vector2(976, 175), contentLoader.expansionIconTexture, 1f);
+            entities.Add(expansionCounter);
+
+            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 170));
             entities.Add(antShop);
 
-            //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
-            //entities.Add(expansionShop);
-
-
-            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader);
-            entities.Add(hiveMap);
+            this.expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter, new Vector2(0, 210));
+            entities.Add(expansionShop);
 
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);
