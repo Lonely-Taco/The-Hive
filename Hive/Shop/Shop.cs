@@ -16,12 +16,12 @@ namespace Hive.Shops
     public abstract class Shop : DrawnEntity
     {
         protected Counter nectarCounter;
-        protected Vector2 iconOffset = new Vector2(0, 10);
+        protected Vector2 iconOffset = new Vector2(5, 6);
         protected Button buyButton;
-        protected Vector2 buyButtonOffset = new Vector2(108, 3);
+        protected Vector2 buyButtonOffset = new Vector2(176, 4);
         protected DrawnEntity icon;
-        protected Vector2 costIconOffset = new Vector2(0, 30);
-        protected Vector2 costTextOffset = new Vector2(0, 20);
+        protected Vector2 costIconOffset = new Vector2(120, 7);
+        protected Vector2 costTextOffset = new Vector2(110, 13);
         protected DrawnEntity costIcon;
         protected Counter counter;
 
@@ -30,12 +30,12 @@ namespace Hive.Shops
         protected static Texture2D buttonTexture;
         protected static Texture2D nectarTexture;
 
-        protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter) : base(Shop.backgroundTexture, position)
+        protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter, float scale) : base(Shop.backgroundTexture, position, 0.2f * scale)
         {
-            this.icon = new DrawnEntity(icon, position + iconOffset);
+            this.icon = new DrawnEntity(icon, position + iconOffset, 0.9f * scale);
             this.nectarCounter = nectarCounter;
-            this.buyButton = new Button(buttonTexture, position + buyButtonOffset, "Buy", font);
-            this.costIcon = new DrawnEntity(nectarTexture, position + costIconOffset);
+            this.buyButton = new Button(buttonTexture, position + buyButtonOffset, "+1", font, 0.13f * scale);
+            this.costIcon = new DrawnEntity(nectarTexture, position + costIconOffset, 0.9f * scale);
             this.counter = counter;
             buyButton.Click += OnClick;
 
@@ -56,14 +56,14 @@ namespace Hive.Shops
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1f)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch, 0.3f * scale);
-            icon.Draw(gameTime, spriteBatch, 0.9f * scale);
-            costIcon.Draw(gameTime, spriteBatch, 0.9f * scale);
+            base.Draw(gameTime, spriteBatch);
+            icon.Draw(gameTime, spriteBatch);
+            costIcon.Draw(gameTime, spriteBatch);
             //Cost string
             spriteBatch.DrawString(font, CurrentCost().ToString() , position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
-            buyButton.Draw(gameTime, spriteBatch, 0.9f * scale);
+            buyButton.Draw(gameTime, spriteBatch);
         }
 
         public override void Update(GameTime gameTime)

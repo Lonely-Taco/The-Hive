@@ -13,7 +13,7 @@ namespace Hive.Map
     {
         protected Vector2 mapCoordinates;
 
-        protected HiveMapObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(texture, position)
+        protected HiveMapObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(texture, position, 1f)
         {
             this.mapCoordinates = mapCoordinates;
         }

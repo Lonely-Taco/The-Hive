@@ -17,7 +17,7 @@ namespace Hive.Drops
         private float fallSpeed = 40;
 
 
-        public NectarDrop(Counter nectarCounter, int nectarValue, Texture2D texture, Vector2 position, DropManager dropManager) : base(texture, position)
+        public NectarDrop(Counter nectarCounter, int nectarValue, Texture2D texture, Vector2 position, DropManager dropManager) : base(texture, position, 1f)
         {
             this.nectarCounter = nectarCounter;
             this.nectarValue = nectarValue;

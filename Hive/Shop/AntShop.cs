@@ -13,7 +13,7 @@ namespace Hive.Shops
     {
 
         public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Vector2 position)
-            : base(icon, nectarCounter, position, antCounter)
+            : base(icon, nectarCounter, position, antCounter, 1f)
         {
 
         }

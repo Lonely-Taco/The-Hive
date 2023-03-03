@@ -25,7 +25,7 @@ namespace Hive.Map
         private int height;
         private float dropChance;
 
-        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position)
+        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position, 1f)
         {
             this.content = content;
             this.width = width;
@@ -67,7 +67,7 @@ namespace Hive.Map
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
 

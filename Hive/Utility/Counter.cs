@@ -20,7 +20,7 @@ namespace Hive.Utility
         protected static Texture2D backgroundTexture;
         protected static SpriteFont font;
 
-        public Counter(Vector2 position) : base(Counter.backgroundTexture, position)
+        public Counter(Vector2 position) : base(Counter.backgroundTexture, position, 1f)
         {
             count = 0;
             semaphore = new SemaphoreSlim(1);
@@ -59,7 +59,7 @@ namespace Hive.Utility
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, float scale = 1)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.DrawString(font, count.ToString(), position, color);
             base.Draw(gameTime, spriteBatch);

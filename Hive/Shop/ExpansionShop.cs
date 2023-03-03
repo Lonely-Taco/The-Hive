@@ -12,7 +12,7 @@ namespace Hive.Shops
     internal class ExpansionShop : Shop
     {
         public ExpansionShop(Texture2D icon, Counter expansionCounter, Counter nectarCounter, Vector2 position) 
-            : base(icon, nectarCounter, position, expansionCounter)
+            : base(icon, nectarCounter, position, expansionCounter, 1f)
         {
 
         }
