@@ -17,10 +17,6 @@ namespace Hive.Map
         private List<AntObject> ants = new List<AntObject>();
         private List<NectarObject> nectarList = new List<NectarObject>();
 
-        private Counter antCounter;
-        private Counter nectarCounter;
-        private Counter expansionCounter;
-
         private int width;
         private int height;
         private float dropChance;
@@ -31,10 +27,6 @@ namespace Hive.Map
             this.width = width;
             this.height = height;
             this.dropChance = dropChance;
-
-            antCounter = new Counter(new Vector2(100, 100));
-            nectarCounter = new Counter(new Vector2(100, 150));
-            expansionCounter = new Counter(new Vector2(200, 200));
         }
 
         public void SpawnNectar()
@@ -70,10 +62,6 @@ namespace Hive.Map
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
-
-            antCounter.Draw(gameTime, spriteBatch);
-            nectarCounter.Draw(gameTime, spriteBatch);
-            expansionCounter.Draw(gameTime, spriteBatch);
 
             foreach (AntObject ant in ants)
             {

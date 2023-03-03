@@ -55,15 +55,15 @@ namespace Hive
             contentLoader = new ContentLoader(this);
 
             Shop.Initialize(contentLoader.counterFont, contentLoader.buyButtonTexture, contentLoader.nectarTexture, contentLoader.containerTexture);
-            Counter.Initialize(contentLoader.backgroundTexture, contentLoader.counterFont);
+            Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
 
-            this.antCounter = new Counter(new Vector2(10, 100));
+            this.antCounter = new Counter(new Vector2(00, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);
 
-            this.nectarCounter = new Counter(Vector2.One);
+            this.nectarCounter = new Counter(new Vector2(0, 50), contentLoader.nectarTexture, 1f);
             entities.Add(nectarCounter);
 
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(50, 50));
+            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 150));
             entities.Add(antShop);
 
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);
