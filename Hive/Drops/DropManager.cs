@@ -50,15 +50,16 @@ namespace Hive.Drops
                 Vector2 spawnCoords = new Vector2(
                     rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)), 
                     rnd.Next((int)(HiveGame.screenSizeY * 0.1f), (int)(HiveGame.screenSizeY * 0.5f)));
-
+                IDropBehaviour dropBehaviour;
                 if (chance <= goldenDropChance)
                 {
-                    return new GoldenNectarDrop(nectarCounter, dropTexture, spawnCoords, this);
+                    dropBehaviour = new GoldenNectarDropBehaviour();
                 }
                 else
                 {
-                    return new NectarDrop(nectarCounter, regularDropValue, dropTexture, spawnCoords, this);
+                    dropBehaviour = new RegularNectarDropBehaviour();
                 }
+                return new NectarDrop(nectarCounter, dropTexture, spawnCoords, this, dropBehaviour);
             }
             return null;
         }
