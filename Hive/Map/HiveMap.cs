@@ -32,9 +32,9 @@ namespace Hive.Map
             this.height = height;
             this.dropChance = dropChance;
 
-            //antCounter = new Counter(this.content.antTexture, new Vector2(100, 100));
-            //nectarCounter = new Counter(this.content.nectarTexture, new Vector2(100, 150));
-            //expansionCounter = new Counter(this.content.buyButtonTexture, new Vector2(200, 200));
+            antCounter = new Counter(new Vector2(100, 100));
+            nectarCounter = new Counter(new Vector2(100, 150));
+            expansionCounter = new Counter(new Vector2(200, 200));
         }
 
         public void SpawnNectar()
