@@ -84,10 +84,10 @@ namespace Hive.Utility
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch, rectangle);
-            icon.Draw(gameTime, spriteBatch, rectangle);
+            base.Draw(gameTime, spriteBatch);
+            icon.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(font, count.ToString(), Position + textOffset, color, 0f, Vector2.Zero, scale * 6, SpriteEffects.None, 1);
         }
 

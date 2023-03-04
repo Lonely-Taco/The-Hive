@@ -128,7 +128,7 @@ namespace Hive
 
             foreach (IEntity entity in entities)
             {
-                entity.Draw(gameTime, _spriteBatch, null);
+                entity.Draw(gameTime, _spriteBatch);
             }
 
             _spriteBatch.End();

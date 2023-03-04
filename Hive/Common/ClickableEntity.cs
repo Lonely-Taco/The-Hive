@@ -36,7 +36,7 @@ namespace Hive.Common
             CheckMouse();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             Color color = isPressed? Color.LightGray : Color.White;
             spriteBatch.Draw(texture, Position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);

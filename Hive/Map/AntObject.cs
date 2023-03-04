@@ -71,16 +71,9 @@ namespace Hive.Map
 
             if (nectar != null)
             {
-                destination = new Destination();
-
-                var origin = new Vector2(nectar.Texture.Width / 2f, nectar.Texture.Height / 2f);
-
-                destination.Radian = 20;
-                destination.Distance = Vector2.Distance(nectar.GetMapCoordinates(), this.GetMapCoordinates());
                 currentDestination = nectar.Position;
             }
         }
-
 
         public void Move(List<NectarObject> nectarList)
         {

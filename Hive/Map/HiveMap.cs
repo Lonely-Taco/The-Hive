@@ -88,15 +88,16 @@ namespace Hive.Map
         {
             AntObject ant = (AntObject) sender;
 
-            //nectarList.Remove(ant.Nectar);
+            //nectars.Remove(ant.Nectar);
         }
 
         public void MoveAllAnts(List<NectarObject> nectarList)
         {
-            for (int i = ants.Count() - 1; i >= 0; i--)
+            foreach (var ant in ants)
             {
-                //ants[i].Move(nectarList);   
+                ant.Move(nectarList);
             }
+    
         }
 
 
@@ -119,20 +120,20 @@ namespace Hive.Map
 
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch, rectangle);
+            base.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(content.counterFont, nectarList.Values.Count().ToString(), new Vector2(500,500), Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
+            spriteBatch.DrawString(content.counterFont, nectars.Count().ToString(), new Vector2(500,500), Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
 
             foreach (AntObject ant in ants)
             {
-                ant.Draw(gameTime, spriteBatch, null);
+                ant.Draw(gameTime, spriteBatch);
             }
 
             foreach (NectarObject nectar in nectars)
             {
-                nectar.Draw(gameTime, spriteBatch, null);
+                nectar.Draw(gameTime, spriteBatch);
             }
         }
     }

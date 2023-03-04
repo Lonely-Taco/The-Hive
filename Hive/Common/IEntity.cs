@@ -10,7 +10,7 @@ namespace Hive.Common
 {
     public interface IEntity
     {
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle);
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 
         public void Update(GameTime gameTime);
     }

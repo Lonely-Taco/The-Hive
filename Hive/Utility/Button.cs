@@ -22,9 +22,9 @@ namespace Hive.Utility
             textOffset = new Vector2(8, 8);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            base.Draw(gameTime, spriteBatch, rectangle);
+            base.Draw(gameTime, spriteBatch);
             spriteBatch.DrawString(font, text, Position + textOffset, Color.Black,0f, Vector2.Zero, scale * 7, SpriteEffects.None, 0);
         }
 

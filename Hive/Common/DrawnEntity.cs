@@ -26,9 +26,9 @@ namespace Hive.Common
             this.scale = scale;
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, Position, rectangle, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
         }
 
         public virtual void Update(GameTime gameTime)
