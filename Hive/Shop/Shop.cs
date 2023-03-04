@@ -3,32 +3,29 @@ using Hive.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Hive.Shops
 {
     public abstract class Shop : DrawnEntity
     {
+        protected Counter counter;
         protected Counter nectarCounter;
+
+        protected DrawnEntity icon;
         protected Vector2 iconOffset = new Vector2(5, 6);
         protected Button buyButton;
         protected Vector2 buyButtonOffset = new Vector2(176, 4);
-        protected DrawnEntity icon;
+        protected DrawnEntity costIcon;
         protected Vector2 costIconOffset = new Vector2(120, 7);
         protected Vector2 costTextOffset = new Vector2(110, 13);
-        protected DrawnEntity costIcon;
-        protected Counter counter;
 
         protected static SpriteFont font;
         protected static Texture2D backgroundTexture;
         protected static Texture2D buttonTexture;
         protected static Texture2D nectarTexture;
+
+        public event EventHandler OnBuy;
 
         protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter, float scale) : base(Shop.backgroundTexture, position, 0.2f * scale)
         {
@@ -53,6 +50,7 @@ namespace Hive.Shops
             if (await nectarCounter.AddCount(-CurrentCost()))
             {
                 await counter.AddCount(1);
+                OnBuy?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -62,7 +60,7 @@ namespace Hive.Shops
             icon.Draw(gameTime, spriteBatch);
             costIcon.Draw(gameTime, spriteBatch);
             //Cost string
-            spriteBatch.DrawString(font, CurrentCost().ToString() , position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
+            spriteBatch.DrawString(font, CurrentCost().ToString() , position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
             buyButton.Draw(gameTime, spriteBatch);
         }
 

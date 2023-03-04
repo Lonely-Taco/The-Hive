@@ -18,6 +18,7 @@ namespace Hive.Common
         protected bool isHovering = false;
 
         public event EventHandler Click;
+
         public Rectangle Rectangle
         {
             get

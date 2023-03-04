@@ -29,6 +29,9 @@ namespace Hive
         public static int screenSizeX = 1300;
         public static int screenSizeY = 730;
 
+        public ExpansionShop ExpansionShop { get => expansionShop; }
+        public AntShop AntShop { get => antShop; }
+
         public HiveGame()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -40,7 +43,7 @@ namespace Hive
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
             _graphics.IsFullScreen = false;
             _graphics.PreferredBackBufferWidth = screenSizeX;
             _graphics.PreferredBackBufferHeight = screenSizeY;
@@ -55,15 +58,15 @@ namespace Hive
             contentLoader = new ContentLoader(this);
 
             Shop.Initialize(contentLoader.counterFont, contentLoader.buyButtonTexture, contentLoader.nectarTexture, contentLoader.containerTexture);
-            Counter.Initialize(contentLoader.backgroundTexture, contentLoader.counterFont);
+            Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
 
-            this.antCounter = new Counter(new Vector2(10, 100));
+            this.antCounter = new Counter(new Vector2(00, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);
 
-            this.nectarCounter = new Counter(Vector2.One);
+            this.nectarCounter = new Counter(new Vector2(0, 50), contentLoader.nectarTexture, 1f);
             entities.Add(nectarCounter);
 
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(50, 50));
+            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 150));
             entities.Add(antShop);
 
             //this.expansionShop = new ExpansionShop(contentLoader.nectarTexture, antCounter, nectarCounter);

@@ -1,5 +1,6 @@
 ﻿using Hive.Common;
 using Hive.Drops;
+using Hive.Shops;
 using Hive.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,25 +17,39 @@ namespace Hive.Map
         private ContentLoader content;
         private List<AntObject> ants = new List<AntObject>();
         private List<NectarObject> nectarList = new List<NectarObject>();
+        private HiveGame game;
+        private AntShop antShop;
+        private ExpansionShop expansionShop; 
 
-        private Counter antCounter;
-        private Counter nectarCounter;
-        private Counter expansionCounter;
+        private float elapsedDropSpawnTime = 0;
+        private float _dropSpawnTimeInterval = 5f;
 
         private int width;
         private int height;
         private float dropChance;
 
-        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content) : base(texture, position, 1f)
+        private float DropSpawnTimeInterval
+        {
+            get
+            {
+                return _dropSpawnTimeInterval;
+            }
+            set
+            {
+                _dropSpawnTimeInterval = value;
+                elapsedDropSpawnTime = 0;
+            }
+        }
+
+        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content, HiveGame game) : base(texture, position, 1f)
         {
             this.content = content;
             this.width = width;
             this.height = height;
             this.dropChance = dropChance;
-
-            antCounter = new Counter(new Vector2(100, 100));
-            nectarCounter = new Counter(new Vector2(100, 150));
-            expansionCounter = new Counter(new Vector2(200, 200));
+            this.game = game;
+            this.antShop = game.AntShop;
+            this.expansionShop = game.ExpansionShop;
         }
 
         public void SpawnNectar()
@@ -43,11 +58,13 @@ namespace Hive.Map
             float chance = rnd.Next(0, 1);
             if (chance <= dropChance)
             {
-                Vector2 nectarCoordinates = new Vector2(rnd.Next(0, width), rnd.Next(0, height));
-                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates); //TODO: change to contain actual texture/coordinates
+                Vector2 nectarCoordinates = new Vector2(rnd.Next((int) position.X, width + (int)position.X), rnd.Next((int) position.Y, height + (int) position.Y));
+                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates); 
                 nectarList.Add(nectar);
             }
         }
+
+
 
         public void MoveAllAnts()
         {
@@ -64,16 +81,20 @@ namespace Hive.Map
 
         public override void Update(GameTime gameTime)
         {
-            //throw new NotImplementedException();
+            if (elapsedDropSpawnTime > DropSpawnTimeInterval)
+            {
+                SpawnNectar();
+
+                elapsedDropSpawnTime = 0;
+            }
+
+            elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+     
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
-
-            antCounter.Draw(gameTime, spriteBatch);
-            nectarCounter.Draw(gameTime, spriteBatch);
-            expansionCounter.Draw(gameTime, spriteBatch);
 
             foreach (AntObject ant in ants)
             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hive.Shops
 {
-    internal class AntShop : Shop
+    public class AntShop : Shop
     {
 
         public AntShop(Texture2D icon, Counter antCounter, Counter nectarCounter, Vector2 position)

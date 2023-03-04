@@ -18,7 +18,9 @@ namespace Hive.Map
         public NectarObject GetNearestNectar(List<NectarObject> nectarObjects)
         {
             float shortestDistance = float.MaxValue;
+
             NectarObject nearestNectar = null;
+            
             foreach(NectarObject nectarObject in nectarObjects) 
             {
                 float distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());

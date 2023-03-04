@@ -44,11 +44,11 @@ namespace Hive.Drops
         public NectarDrop SpawnRandomDrop()
         {
             Random rnd = new Random();
-            float chance = rnd.Next(0, 100)/100f;
-            if(chance <= dropChance)
+            float chance = rnd.Next(0, 100) / 100f;
+            if (chance <= dropChance)
             {
                 Vector2 spawnCoords = new Vector2(
-                    rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)), 
+                    rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)),
                     rnd.Next((int)(HiveGame.screenSizeY * 0.1f), (int)(HiveGame.screenSizeY * 0.5f)));
 
                 if (chance <= goldenDropChance)
@@ -75,23 +75,25 @@ namespace Hive.Drops
 
         public void Update(GameTime gameTime)
         {
-            if(elapsedDropSpawnTime > DropSpawnTimeInterval)
+            if (elapsedDropSpawnTime > DropSpawnTimeInterval)
             {
                 NectarDrop newDrop = SpawnRandomDrop();
-                if(newDrop != null)
+
+                if (newDrop != null)
                 {
                     dropList.Add(newDrop);
                 }
                 elapsedDropSpawnTime = 0;
             }
+
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             foreach (NectarDrop drop in dropList)
             {
                 drop.Update(gameTime);
             }
-            
-            foreach(NectarDrop drop in dropsToBeRemoved)
+
+            foreach (NectarDrop drop in dropsToBeRemoved)
             {
                 dropList.Remove(drop);
             }
