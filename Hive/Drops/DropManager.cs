@@ -3,6 +3,7 @@ using Hive.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace Hive.Drops
@@ -12,11 +13,12 @@ namespace Hive.Drops
         private float dropChance = 0.5f;
         private float goldenDropChance = 0.1f;
         private Counter nectarCounter;
-        private int regularDropValue;
         private List<NectarDrop> dropList = new List<NectarDrop>();
         private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
+        private List<EventText> textToBeRemoved = new List<EventText>();
         private float elapsedDropSpawnTime = 0;
         private float _dropSpawnTimeInterval = 1;
+        private List<EventText> eventTexts = new List<EventText>();
 
         private Texture2D dropTexture;
 
@@ -24,7 +26,6 @@ namespace Hive.Drops
         public DropManager(Counter nectarCounter, Texture2D dropTexture)
         {
             this.nectarCounter = nectarCounter;
-            this.regularDropValue = 1;
             this.dropTexture = dropTexture;
         }
 
@@ -64,11 +65,6 @@ namespace Hive.Drops
             return null;
         }
 
-        public void SetRegularDropValue(int value)
-        {
-            this.regularDropValue = value;
-        }
-
         public void RemoveDrop(NectarDrop drop)
         {
             dropsToBeRemoved.Add(drop);
@@ -94,9 +90,18 @@ namespace Hive.Drops
                 drop.Update(gameTime);
             }
 
+            foreach (EventText eventText in eventTexts)
+            {
+                eventText.Update(gameTime);
+            }
+
             foreach (NectarDrop drop in dropsToBeRemoved)
             {
                 dropList.Remove(drop);
+            }
+            foreach (EventText eventText in textToBeRemoved)
+            {
+                eventTexts.Remove(eventText);
             }
             dropsToBeRemoved.Clear();
         }
@@ -107,6 +112,21 @@ namespace Hive.Drops
             {
                 drop.Draw(gameTime, spriteBatch, rectangle);
             }
+
+            foreach (EventText eventText in eventTexts)
+            {
+                eventText.Draw(gameTime, spriteBatch);
+            }
+        }
+
+        public void AddEventText(Vector2 position, float scale, string text, Color color, float fadeOutSpeed)
+        {
+            eventTexts.Add(new EventText(position, scale, text, color, fadeOutSpeed, this));
+        }
+
+        internal void RemoveEventText(EventText eventText)
+        {
+            textToBeRemoved.Add(eventText);
         }
     }
 }

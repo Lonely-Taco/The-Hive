@@ -68,8 +68,9 @@ namespace Hive
                             contentLoader.costBackgroundTexture);
 
             Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
+            EventText.Initialize(contentLoader.counterFont);
 
-           
+
 
             this.antCounter = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);

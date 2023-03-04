@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,8 +17,8 @@ namespace Hive.Map
     internal class HiveMap : DrawnEntity
     {
         private ContentLoader content;
-        private List<AntObject> ants = new List<AntObject>();
-        private List<NectarObject> nectarList = new List<NectarObject>();
+        private ConcurrentBag<AntObject> ants = new ConcurrentBag<AntObject>();
+        private ConcurrentBag<NectarObject> nectars = new ConcurrentBag<NectarObject>();
         private HiveGame game;
         private AntShop antShop;
         private ExpansionShop expansionShop;
@@ -68,7 +69,7 @@ namespace Hive.Map
             {
                 Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
                 NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates);
-                nectarList.Add(nectar);
+                nectars.Add(nectar);
             }
         }
 
@@ -87,14 +88,14 @@ namespace Hive.Map
         {
             AntObject ant = (AntObject) sender;
 
-            nectarList.Remove(ant.Nectar);
+            //nectarList.Remove(ant.Nectar);
         }
 
         public void MoveAllAnts(List<NectarObject> nectarList)
         {
             for (int i = ants.Count() - 1; i >= 0; i--)
             {
-                ants[i].Move(nectarList);   
+                //ants[i].Move(nectarList);   
             }
         }
 
@@ -110,8 +111,7 @@ namespace Hive.Map
 
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             
-            MoveAllAnts(nectarList);
-
+            MoveAllAnts(nectars.ToList());
             foreach (var ant in ants)
             {
                 ant.Update(gameTime);
@@ -123,14 +123,14 @@ namespace Hive.Map
         {
             base.Draw(gameTime, spriteBatch, rectangle);
 
-            spriteBatch.DrawString(content.counterFont, nectarList.Count().ToString(), new Vector2(500,500), Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
+            spriteBatch.DrawString(content.counterFont, nectarList.Values.Count().ToString(), new Vector2(500,500), Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
 
             foreach (AntObject ant in ants)
             {
                 ant.Draw(gameTime, spriteBatch, null);
             }
 
-            foreach (NectarObject nectar in nectarList)
+            foreach (NectarObject nectar in nectars)
             {
                 nectar.Draw(gameTime, spriteBatch, null);
             }

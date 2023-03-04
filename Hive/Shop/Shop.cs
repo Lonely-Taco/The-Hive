@@ -51,9 +51,9 @@ namespace Hive.Shops
 
         public virtual async void Buy()
         {
-            if (await nectarCounter.AddCount(-CurrentCost()))
+            if (await nectarCounter.Subtract(CurrentCost()))
             {
-                await counter.AddCount(1);
+                await counter.Add(1);
                 OnBuy?.Invoke(this, EventArgs.Empty);
             }
         }

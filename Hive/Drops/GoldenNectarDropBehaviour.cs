@@ -7,10 +7,10 @@ namespace Hive.Drops
 {
     internal class GoldenNectarDropBehaviour : IDropBehaviour
     {
-        public async void Claim(Counter nectarCounter, DropManager dropManager, NectarDrop parentDrop)
+        public async Task<int> Claim(Counter nectarCounter, DropManager dropManager)
         {
-            await nectarCounter.DoubleNectar();
-            dropManager.RemoveDrop(parentDrop);
+            int addedNectar = await nectarCounter.DoubleNectar();
+            return addedNectar;
         }
     }
 }

@@ -32,6 +32,14 @@ namespace Hive.Utility
             }
         }
 
+        public static bool MouseDown
+        {
+            get
+            {
+                return currentMouseState.LeftButton == ButtonState.Pressed;
+            }
+        }
+
         public static void Update(GameTime gameTime)
         {
             previousMouseState = currentMouseState;

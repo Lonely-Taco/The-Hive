@@ -12,8 +12,8 @@ namespace Hive.Common
 {
     public class DrawnEntity : IEntity
     {
-        private Texture2D texture;
-        private Vector2 position;
+        protected Texture2D texture;
+        protected Vector2 position;
         protected float scale;
 
         public Vector2 Position { get => position; set => position = value; }

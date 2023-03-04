@@ -31,28 +31,40 @@ namespace Hive.Utility
             this.icon = new DrawnEntity(iconTexture, position + iconOffset, scale);
         }
 
-        public async Task<bool> AddCount(int value)
+        public async Task<bool> Subtract(int value)
         {
+            if (value < 0) { return false; }
             await semaphore.WaitAsync();
-            if (count + value < 0)
+            if (count - value < 0)
             {
                 semaphore.Release();
                 return false;
             }
             else
             {
-                count += value;
+                count -= value;
                 semaphore.Release();
                 return true;
             }
         }
 
+        public async Task<int> Add(int value)
+        {
+            if (value < 0) return 0;
+            await semaphore.WaitAsync();
+            count += value;
+            semaphore.Release();
+            return value;
+            
+        }
+
         public async Task<int> DoubleNectar()
         {
             await semaphore.WaitAsync();
+            int oldCount = count;
             count = count * 2;
             semaphore.Release();
-            return count;
+            return oldCount;
         }
 
         public async Task ResetCount()

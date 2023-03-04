@@ -32,7 +32,9 @@ namespace Hive.Drops
 
         public virtual async void Claim()
         {
-           dropBehaviour.Claim(nectarCounter, dropManager, this);
+            int addedNectar = await dropBehaviour.Claim(nectarCounter, dropManager);
+            dropManager.AddEventText(position, scale * 1.5f, $"+{addedNectar.ToString()}", Color.Orange, 0.5f);
+            dropManager.RemoveDrop(this);
         }
 
 

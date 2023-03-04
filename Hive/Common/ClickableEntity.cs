@@ -13,9 +13,8 @@ namespace Hive.Common
     public abstract class ClickableEntity : DrawnEntity
     {
 
-        private MouseState currentMouseState;
-        private MouseState previousMouseState;
         protected bool isHovering = false;
+        protected bool isPressed = false;
 
         public event EventHandler Click;
 
@@ -37,12 +36,20 @@ namespace Hive.Common
             CheckMouse();
         }
 
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
+        {
+            Color color = isPressed? Color.LightGray : Color.White;
+            spriteBatch.Draw(texture, Position, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
+
+        }
+
         public void CheckMouse()
         {
             if (InputManager.MouseRectangleBounds.Intersects(Rectangle))
             {
                 isHovering = true;
                 //Hovering logic here?
+                isPressed = InputManager.MouseDown;
 
                 if (InputManager.Clicked)
                 {
@@ -52,6 +59,7 @@ namespace Hive.Common
             else
             { 
                 isHovering = false;
+                isPressed = false;
             }
         }
     }
