@@ -13,28 +13,27 @@ namespace Hive.Drops
     {
         protected DropManager dropManager;
         protected Counter nectarCounter;
-        private int nectarValue;
         private float fallSpeed = 40;
+        private IDropBehaviour dropBehaviour;
 
 
-        public NectarDrop(Counter nectarCounter, int nectarValue, Texture2D texture, Vector2 position, DropManager dropManager) : base(texture, position, 1f)
+        public NectarDrop(Counter nectarCounter, Texture2D texture, Vector2 position, DropManager dropManager, IDropBehaviour dropBehaviour) : base(texture, position, 1f)
         {
             this.nectarCounter = nectarCounter;
-            this.nectarValue = nectarValue;
             this.dropManager = dropManager;
             this.Click += OnClick;
+            this.dropBehaviour = dropBehaviour;
         }
 
         protected void OnClick(object sender, EventArgs e)
         {
             Task.Factory.StartNew(Claim);
         }
-
         public virtual async void Claim()
         {
-            await nectarCounter.AddCount(nectarValue);
-            dropManager.RemoveDrop(this);
+            dropBehaviour.Claim(nectarCounter, dropManager, this);
         }
+
 
         public override void Update(GameTime gameTime)
         {
