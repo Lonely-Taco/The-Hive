@@ -49,7 +49,13 @@ namespace Hive.Map
             this.dropChance = dropChance;
             this.game = game;
             this.antShop = game.AntShop;
+            this.antShop.OnBuy += AntOnBuy;
             this.expansionShop = game.ExpansionShop;
+        }
+
+        private void AntOnBuy(object sender, EventArgs e)
+        {
+            Console.WriteLine("Baught");
         }
 
         public void SpawnNectar()

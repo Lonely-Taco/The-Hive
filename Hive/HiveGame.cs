@@ -65,8 +65,7 @@ namespace Hive
                             contentLoader.costBackgroundTexture);
             Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
 
-            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader);
-            entities.Add(hiveMap);
+           
 
             this.antCounter = new Counter(new Vector2(00, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);
@@ -85,6 +84,9 @@ namespace Hive
 
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);
+
+            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader, this);
+            entities.Add(hiveMap);
 
             // TODO: use this.Content to load your game content here
         }
