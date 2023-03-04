@@ -11,19 +11,23 @@ namespace Hive.Common
 {
     public class DrawnEntity : IEntity
     {
-        protected Texture2D texture;
-        protected Vector2 position;
+        private Texture2D texture;
+        private Vector2 position;
         protected float scale;
+
+        public Vector2 Position { get => position; set => position = value; }
+        public Texture2D Texture { get => texture; set => texture = value; }
+
         public DrawnEntity(Texture2D texture, Vector2 position, float scale)
         {
             this.texture = texture;
-            this.position = position;
+            this.Position = position;
             this.scale = scale;
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
+            spriteBatch.Draw(texture, Position, null, Color.White, 0f, Vector2.Zero, scale, SpriteEffects.None, 1);
         }
 
         public virtual void Update(GameTime gameTime)

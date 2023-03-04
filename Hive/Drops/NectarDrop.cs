@@ -37,9 +37,13 @@ namespace Hive.Drops
 
         public override void Update(GameTime gameTime)
         {
-            position.Y += fallSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            var currentPos = Position;
 
-            if(position.Y > HiveGame.screenSizeY) 
+            currentPos.Y += fallSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+
+            Position= currentPos;
+
+            if(currentPos.Y > HiveGame.screenSizeY) 
             { 
                 dropManager.RemoveDrop(this);
             }

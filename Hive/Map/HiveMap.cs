@@ -19,13 +19,14 @@ namespace Hive.Map
         private List<NectarObject> nectarList = new List<NectarObject>();
         private HiveGame game;
         private AntShop antShop;
-        private ExpansionShop expansionShop; 
+        private ExpansionShop expansionShop;
 
         private float elapsedDropSpawnTime = 0;
         private float _dropSpawnTimeInterval = 5f;
 
         private int width;
         private int height;
+        private int antSpeed = 1;
         private float dropChance;
 
         private float DropSpawnTimeInterval
@@ -55,7 +56,8 @@ namespace Hive.Map
 
         private void AntOnBuy(object sender, EventArgs e)
         {
-            Console.WriteLine("Baught");
+            //TODO: spawn the ants.
+            SpawnAnt();
         }
 
         public void SpawnNectar()
@@ -64,19 +66,27 @@ namespace Hive.Map
             float chance = rnd.Next(0, 1);
             if (chance <= dropChance)
             {
-                Vector2 nectarCoordinates = new Vector2(rnd.Next((int) position.X, width + (int)position.X), rnd.Next((int) position.Y, height + (int) position.Y));
-                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates); 
+                Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
+                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates);
                 nectarList.Add(nectar);
             }
         }
 
-
-
-        public void MoveAllAnts()
+        public void SpawnAnt()
         {
-            foreach(AntObject ant in ants)
+            Random rnd = new Random();
+            //var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
+            var antCoordinates = new Vector2(1200,600);
+            AntObject antObject = new AntObject(antSpeed, antCoordinates, content.antTexture, antCoordinates);
+
+            ants.Add(antObject);
+        }
+
+        public void MoveAllAnts(List<NectarObject> nectarList)
+        {
+            foreach (AntObject ant in ants)
             {
-                ant.Move();
+                ant.Move(nectarList);
             }
         }
 
@@ -95,7 +105,14 @@ namespace Hive.Map
             }
 
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-     
+            
+            MoveAllAnts(nectarList);
+
+            foreach (var ant in ants)
+            {
+                ant.Update(gameTime);
+            }
+
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

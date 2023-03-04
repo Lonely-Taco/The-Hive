@@ -65,7 +65,7 @@ namespace Hive.Shops
             costBackground.Draw(gameTime, spriteBatch);
             costIcon.Draw(gameTime, spriteBatch);
             //Cost string
-            spriteBatch.DrawString(font, CurrentCost().ToString() , position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
+            spriteBatch.DrawString(font, CurrentCost().ToString() , Position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
             buyButton.Draw(gameTime, spriteBatch);
         }
 

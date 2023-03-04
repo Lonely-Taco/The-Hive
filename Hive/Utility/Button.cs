@@ -25,7 +25,7 @@ namespace Hive.Utility
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             base.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(font, text, position + textOffset, Color.Black,0f, Vector2.Zero, scale * 7, SpriteEffects.None, 0);
+            spriteBatch.DrawString(font, text, Position + textOffset, Color.Black,0f, Vector2.Zero, scale * 7, SpriteEffects.None, 0);
         }
 
         public override void Update(GameTime gameTime)

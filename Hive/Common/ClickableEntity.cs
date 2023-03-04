@@ -23,7 +23,7 @@ namespace Hive.Common
         {
             get
             {
-                return new Rectangle((int)position.X, (int)position.Y, (int)(texture.Width * scale), (int)(texture.Height * scale));
+                return new Rectangle((int)Position.X, (int)Position.Y, (int)(Texture.Width * scale), (int)(Texture.Height * scale));
             }
         }
 
