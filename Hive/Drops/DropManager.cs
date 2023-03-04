@@ -115,7 +115,7 @@ namespace Hive.Drops
 
             foreach (EventText eventText in eventTexts)
             {
-                eventText.Draw(gameTime, spriteBatch, null);
+                eventText.Draw(gameTime, spriteBatch);
             }
         }
 
