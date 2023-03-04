@@ -101,11 +101,11 @@ namespace Hive.Drops
             dropsToBeRemoved.Clear();
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
         {
             foreach (NectarDrop drop in dropList)
             {
-                drop.Draw(gameTime, spriteBatch);
+                drop.Draw(gameTime, spriteBatch, rectangle);
             }
         }
     }

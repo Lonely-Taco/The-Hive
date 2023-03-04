@@ -72,11 +72,11 @@ namespace Hive.Utility
             //throw new NotImplementedException();
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
         {
-            base.Draw(gameTime, spriteBatch);
-            icon.Draw(gameTime, spriteBatch);
-            spriteBatch.DrawString(font, count.ToString(), position + textOffset, color, 0f, Vector2.Zero, scale * 6, SpriteEffects.None, 1);
+            base.Draw(gameTime, spriteBatch, rectangle);
+            icon.Draw(gameTime, spriteBatch, rectangle);
+            spriteBatch.DrawString(font, count.ToString(), Position + textOffset, color, 0f, Vector2.Zero, scale * 6, SpriteEffects.None, 1);
         }
 
         public static void Initialize(Texture2D backgroundTexture, SpriteFont font)

@@ -1,14 +1,25 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Hive.Drops;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Hive.Map
 {
     internal class AntObject : HiveMapObject
     {
         private Vector2 currentDestination;
+        private Vector2 currentDirection;
+        private Destination destination;
+        private NectarObject nectar;
+
         private int speed;
+
+        public NectarObject Nectar { get => nectar; set => nectar = value; }
+
+        public event EventHandler OnNectarPickUp;
 
         public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
         {
@@ -20,8 +31,8 @@ namespace Hive.Map
             float shortestDistance = float.MaxValue;
 
             NectarObject nearestNectar = null;
-            
-            foreach(NectarObject nectarObject in nectarObjects) 
+
+            foreach (NectarObject nectarObject in nectarObjects)
             {
                 float distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());
                 if (distance < shortestDistance)
@@ -30,17 +41,74 @@ namespace Hive.Map
                     nearestNectar = nectarObject;
                 }
             }
+
             return nearestNectar;
         }
 
         public override void Update(GameTime gameTime)
         {
-            throw new System.NotImplementedException();
+
+            var currentPos = Position;
+
+            currentDirection.Normalize();
+
+            currentPos += currentDirection * speed;
+
+            currentPos.Deconstruct(out float x, out float y);
+
+            currentPos = new Vector2((int)x, (int)y);
+            
+            Position = currentPos;
+
+            Debug.WriteLine(Position.ToString());
+            Debug.WriteLine(currentDestination.ToString());
+            base.Update(gameTime);
         }
 
-        internal void Move()
+        internal void SetCurrentDestination(List<NectarObject> nectarList)
         {
-            throw new NotImplementedException();
+            NectarObject nectar = GetNearestNectar(nectarList);
+
+            if (nectar != null)
+            {
+                destination = new Destination();
+
+                var origin = new Vector2(nectar.Texture.Width / 2f, nectar.Texture.Height / 2f);
+
+                destination.Radian = 20;
+                destination.Distance = Vector2.Distance(nectar.GetMapCoordinates(), this.GetMapCoordinates());
+                currentDestination = nectar.Position;
+            }
+        }
+
+
+        public void Move(List<NectarObject> nectarList)
+        {
+            Debug.WriteLine("moving");
+            NectarObject nectar = GetNearestNectar(nectarList);
+
+            if (nectar != null)
+            {
+                currentDestination = nectar.Position;
+            }
+
+            currentDirection = currentDestination - Position;
+
+            if (Position == currentDestination)
+            {
+                Debug.WriteLine("there");
+
+                this.nectar = nectar;
+
+                if (nectarList.Contains(nectar))
+                {
+                    OnNectarPickUp?.Invoke(this, EventArgs.Empty);
+
+                    SetCurrentDestination(nectarList);
+
+                    currentDirection = currentDestination - Position;
+                }
+            }
         }
     }
 }

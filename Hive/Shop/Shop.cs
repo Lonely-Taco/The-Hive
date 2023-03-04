@@ -58,15 +58,15 @@ namespace Hive.Shops
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch, Rectangle? rectangle)
         {
-            base.Draw(gameTime, spriteBatch);
-            icon.Draw(gameTime, spriteBatch);
-            costBackground.Draw(gameTime, spriteBatch);
-            costIcon.Draw(gameTime, spriteBatch);
+            base.Draw(gameTime, spriteBatch, rectangle);
+            icon.Draw(gameTime, spriteBatch, rectangle);
+            costBackground.Draw(gameTime, spriteBatch, rectangle);
+            costIcon.Draw(gameTime, spriteBatch, rectangle);
             //Cost string
-            spriteBatch.DrawString(font, CurrentCost().ToString() , position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
-            buyButton.Draw(gameTime, spriteBatch);
+            spriteBatch.DrawString(font, CurrentCost().ToString() , Position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
+            buyButton.Draw(gameTime, spriteBatch, rectangle);
         }
 
         public override void Update(GameTime gameTime)

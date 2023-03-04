@@ -10,6 +10,12 @@ namespace Hive.Map
 
         }
 
+        public void PickUp()
+        {
+
+        }
+
+
         public override void Update(GameTime gameTime)
         {
             throw new System.NotImplementedException();

@@ -9,6 +9,7 @@ using Hive.Common;
 using Hive.Utility;
 using System.Drawing;
 using Color = Microsoft.Xna.Framework.Color;
+using System.Diagnostics;
 
 namespace Hive
 {
@@ -35,6 +36,7 @@ namespace Hive
 
         public HiveGame()
         {
+
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -55,6 +57,7 @@ namespace Hive
 
         protected override void LoadContent()
         {
+
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             contentLoader = new ContentLoader(this);
 
@@ -63,11 +66,12 @@ namespace Hive
                             contentLoader.nectarTexture, 
                             contentLoader.containerTexture,
                             contentLoader.costBackgroundTexture);
+
             Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
 
            
 
-            this.antCounter = new Counter(new Vector2(00, 0), contentLoader.antTexture, 1f);
+            this.antCounter = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
             entities.Add(antCounter);
 
             this.nectarCounter = new Counter(new Vector2(0, 57), contentLoader.nectarTexture, 1f);
@@ -82,11 +86,12 @@ namespace Hive
             this.expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter, new Vector2(0, 210));
             entities.Add(expansionShop);
 
+            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader, this);
+            entities.Add(hiveMap);
+
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
             entities.Add(dropManager);
 
-            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader, this);
-            entities.Add(hiveMap);
 
             // TODO: use this.Content to load your game content here
         }
@@ -122,7 +127,7 @@ namespace Hive
 
             foreach (IEntity entity in entities)
             {
-                entity.Draw(gameTime, _spriteBatch);
+                entity.Draw(gameTime, _spriteBatch, null);
             }
 
             _spriteBatch.End();
