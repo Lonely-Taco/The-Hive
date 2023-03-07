@@ -38,10 +38,16 @@ The Hive game will make use of the following threading techniques:
 * To make sure that the counter remains correct, a mutex will be implemented for all counters. The mutex will freeze changes to the counter until the previous calculations are all done. This will ensure that no race conditions occur when multiple threads try to access the counters at the same time.
 Tasks for ant finding the nearest nectar drop on the hive map.
 
+##Tasks for ants!
+
 * Tasks will be used to orient the ants in the correct direction to the nectar. This calculation is fairly simple, but using tasks will allow it to be performed asynchronously in the background without freezing the game's UI. In addition, this approach can be expanded upon to support more complicated path-finding algorithms in the future.
+
+## Semahores on the map
 
 * Semaphore for map. Increase allowed number of threads through upgrades.
 The number of tasks for the hive map will be limited by a semaphore. This way, not too many calculations for tasks will be done at the same time, keeping the requirements of running The Hive low. Ants will have to wait until there is room in the semaphore if the semaphore is full. In the menu the semaphore count can be altered.
 
-* Delegate for clicking buttons/ manually collecting nectar.
+## Delagates
+
+* For clicking buttons/ manually collecting nectar.
 To make sure the game remains responsive after a button has been pressed, delegates will be used to handle any interactions the user has with the UI of the game. These interactions include manually claiming nectar and buying from the shops. This approach will allow these interactions to be performed asynchronously in the background, without freezing the 
