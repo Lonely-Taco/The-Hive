@@ -38,7 +38,7 @@ The Hive game will make use of the following threading techniques:
 * To make sure that the counter remains correct, a mutex will be implemented for all counters. The mutex will freeze changes to the counter until the previous calculations are all done. This will ensure that no race conditions occur when multiple threads try to access the counters at the same time.
 Tasks for ant finding the nearest nectar drop on the hive map.
 
-##Tasks for ants!
+## Tasks for ants!
 
 * Tasks will be used to orient the ants in the correct direction to the nectar. This calculation is fairly simple, but using tasks will allow it to be performed asynchronously in the background without freezing the game's UI. In addition, this approach can be expanded upon to support more complicated path-finding algorithms in the future.
 
