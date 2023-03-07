@@ -26,7 +26,7 @@ Shops will be used to purchase ants and hive expansions with nectar. The cost of
 ## Drops
 Nectar drops randomly appear on the player's screen. There are regular and golden drops. Regular drops offer a single nectar, while golden drops double the current nectar count but are much rarer.
 
-##Hive Map
+## Hive Map
 
 The hive map shows all owned ants and automatically collects nectar that spawns randomly on the map. The ants move towards a nectar drop and collect it. Once a nectar drop has been collected, ants with that drop as a target try to find the next nearest nectar drop. If there are none, they wait until one spawns.
 
