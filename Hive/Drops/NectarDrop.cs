@@ -13,7 +13,7 @@ namespace Hive.Drops
     {
         protected DropManager dropManager;
         protected Counter nectarCounter;
-        private float fallSpeed = 40;
+        private float fallSpeed = 0;
         private IDropBehaviour dropBehaviour;
 
 

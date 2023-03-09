@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Hive.Drops
 {
@@ -17,7 +18,7 @@ namespace Hive.Drops
         private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
         private List<EventText> textToBeRemoved = new List<EventText>();
         private float elapsedDropSpawnTime = 0;
-        private float _dropSpawnTimeInterval = 1;
+        private float _dropSpawnTimeInterval = 0.1f;
         private List<EventText> eventTexts = new List<EventText>();
 
         private Texture2D dropTexture;
@@ -49,8 +50,8 @@ namespace Hive.Drops
             if (chance <= dropChance)
             {
                 Vector2 spawnCoords = new Vector2(
-                    rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)),
-                    rnd.Next((int)(HiveGame.screenSizeY * 0.1f), (int)(HiveGame.screenSizeY * 0.5f)));
+                    rnd.Next((int)(HiveGame.screenSizeX * 0.5f), (int)(HiveGame.screenSizeX * 0.5f)),
+                    rnd.Next((int)(HiveGame.screenSizeY * 0.5f), (int)(HiveGame.screenSizeY * 0.5f)));
                 IDropBehaviour dropBehaviour;
                 if (chance <= goldenDropChance)
                 {
@@ -108,12 +109,13 @@ namespace Hive.Drops
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            foreach (NectarDrop drop in dropList)
+            List<NectarDrop> drops = dropList.ToList();
+            foreach (NectarDrop drop in drops)
             {
                 drop.Draw(gameTime, spriteBatch);
             }
-
-            foreach (EventText eventText in eventTexts)
+            List<EventText> eventTextList = eventTexts.ToList();
+            foreach (EventText eventText in eventTextList)
             {
                 eventText.Draw(gameTime, spriteBatch);
             }

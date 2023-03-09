@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
 
 namespace Hive.Map
 {
@@ -13,26 +15,26 @@ namespace Hive.Map
         private Vector2 currentDestination;
         private Vector2 currentDirection;
         private Destination destination;
-        private NectarObject nectar;
+        private NectarObject currentTarget;
 
         private int speed;
 
-        public NectarObject Nectar { get => nectar; set => nectar = value; }
+        public NectarObject CurrentTarget { get => currentTarget; set => currentTarget = value; }
 
         public event EventHandler OnNectarPickUp;
 
-        public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
+        public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position, Guid guid) : base(mapCoordinates, texture, position, guid)
         {
             this.speed = speed;
         }
 
-        public NectarObject GetNearestNectar(List<NectarObject> nectarObjects)
+        public NectarObject GetNearestNectar(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
             float shortestDistance = float.MaxValue;
 
             NectarObject nearestNectar = null;
 
-            foreach (NectarObject nectarObject in nectarObjects)
+            foreach (NectarObject nectarObject in nectarObjects.Values)
             {
                 float distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());
                 if (distance < shortestDistance)
@@ -47,60 +49,34 @@ namespace Hive.Map
 
         public override void Update(GameTime gameTime)
         {
-
-            var currentPos = Position;
-
-            currentDirection.Normalize();
-
-            currentPos += currentDirection * speed;
-
-            currentPos.Deconstruct(out float x, out float y);
-
-            currentPos = new Vector2((int)x, (int)y);
-            
-            Position = currentPos;
-
-            Debug.WriteLine(Position.ToString());
-            Debug.WriteLine(currentDestination.ToString());
             base.Update(gameTime);
         }
 
-        internal void SetCurrentDestination(List<NectarObject> nectarList)
+        internal void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarList)
         {
             NectarObject nectar = GetNearestNectar(nectarList);
 
             if (nectar != null)
             {
                 currentDestination = nectar.Position;
+                currentDirection = currentDestination - Position;
+                currentTarget = nectar;
+                currentDirection.Normalize();
             }
         }
 
-        public void Move(List<NectarObject> nectarList)
+        public void Move(ConcurrentDictionary<Guid, NectarObject> nectarList)
         {
-            Debug.WriteLine("moving");
-            NectarObject nectar = GetNearestNectar(nectarList);
-
-            if (nectar != null)
+            if (currentTarget == null)
             {
-                currentDestination = nectar.Position;
+                return;
             }
 
-            currentDirection = currentDestination - Position;
+            Position += currentDirection * speed;
 
-            if (Position == currentDestination)
+            if (Vector2.Distance(Position, currentDestination) < 1f)
             {
-                Debug.WriteLine("there");
-
-                this.nectar = nectar;
-
-                if (nectarList.Contains(nectar))
-                {
-                    OnNectarPickUp?.Invoke(this, EventArgs.Empty);
-
-                    SetCurrentDestination(nectarList);
-
-                    currentDirection = currentDestination - Position;
-                }
+                OnNectarPickUp?.Invoke(this, EventArgs.Empty);
             }
         }
     }
