@@ -6,7 +6,7 @@ namespace Hive.Map
 {
     public class NectarObject : HiveMapObject
     {
-        public NectarObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position, Guid guid) : base(mapCoordinates, texture, position, guid)
+        public NectarObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
         {
         }
 

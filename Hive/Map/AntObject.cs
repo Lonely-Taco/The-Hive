@@ -23,7 +23,7 @@ namespace Hive.Map
 
         public event EventHandler OnNectarPickUp;
 
-        public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position, Guid guid) : base(mapCoordinates, texture, position, guid)
+        public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
         {
             this.speed = speed;
         }

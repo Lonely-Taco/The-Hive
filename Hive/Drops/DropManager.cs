@@ -14,12 +14,10 @@ namespace Hive.Drops
         private float dropChance = 0.5f;
         private float goldenDropChance = 0.1f;
         private Counter nectarCounter;
-        private List<NectarDrop> dropList = new List<NectarDrop>();
-        private List<NectarDrop> dropsToBeRemoved = new List<NectarDrop>();
-        private List<EventText> textToBeRemoved = new List<EventText>();
+        private ConcurrentDictionary<Guid, NectarDrop> dropList = new ConcurrentDictionary<Guid, NectarDrop>();
+        private ConcurrentDictionary<Guid, EventText> eventTexts = new ConcurrentDictionary<Guid, EventText>();
         private float elapsedDropSpawnTime = 0;
         private float _dropSpawnTimeInterval = 0.1f;
-        private List<EventText> eventTexts = new List<EventText>();
 
         private Texture2D dropTexture;
 
@@ -68,7 +66,7 @@ namespace Hive.Drops
 
         public void RemoveDrop(NectarDrop drop)
         {
-            dropsToBeRemoved.Add(drop);
+            dropList.TryRemove(drop.GetGuid(), out _);
         }
 
         public void Update(GameTime gameTime)
@@ -79,42 +77,34 @@ namespace Hive.Drops
 
                 if (newDrop != null)
                 {
-                    dropList.Add(newDrop);
+                    dropList.TryAdd(newDrop.GetGuid(), newDrop);
                 }
                 elapsedDropSpawnTime = 0;
             }
 
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            foreach (NectarDrop drop in dropList)
+            List<NectarDrop> drops = dropList.Values.ToList();
+            foreach (NectarDrop drop in drops)
             {
                 drop.Update(gameTime);
             }
 
-            foreach (EventText eventText in eventTexts)
+            List<EventText> eventTextList = eventTexts.Values.ToList();
+            foreach (EventText eventText in eventTextList)
             {
                 eventText.Update(gameTime);
             }
-
-            foreach (NectarDrop drop in dropsToBeRemoved)
-            {
-                dropList.Remove(drop);
-            }
-            foreach (EventText eventText in textToBeRemoved)
-            {
-                eventTexts.Remove(eventText);
-            }
-            dropsToBeRemoved.Clear();
         }
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            List<NectarDrop> drops = dropList.ToList();
+            List<NectarDrop> drops = dropList.Values.ToList();
             foreach (NectarDrop drop in drops)
             {
                 drop.Draw(gameTime, spriteBatch);
             }
-            List<EventText> eventTextList = eventTexts.ToList();
+            List<EventText> eventTextList = eventTexts.Values.ToList();
             foreach (EventText eventText in eventTextList)
             {
                 eventText.Draw(gameTime, spriteBatch);
@@ -123,12 +113,13 @@ namespace Hive.Drops
 
         public void AddEventText(Vector2 position, float scale, string text, Color color, float fadeOutSpeed)
         {
-            eventTexts.Add(new EventText(position, scale, text, color, fadeOutSpeed, this));
+            EventText newText = new EventText(position, scale, text, color, fadeOutSpeed, this);
+            eventTexts.TryAdd(newText.GetGuid(), newText);
         }
 
         internal void RemoveEventText(EventText eventText)
         {
-            textToBeRemoved.Add(eventText);
+            eventTexts.Remove(eventText.GetGuid(), out _);
         }
     }
 }

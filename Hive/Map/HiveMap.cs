@@ -71,9 +71,8 @@ namespace Hive.Map
             if (chance <= dropChance)
             {
                 Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-                Guid guid = Guid.NewGuid();
-                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates, guid);
-                nectarBag.TryAdd(guid, nectar);
+                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates);
+                nectarBag.TryAdd(nectar.GetGuid(), nectar);
             }
         }
 
@@ -81,10 +80,9 @@ namespace Hive.Map
         {
             Random rnd = new Random();
             var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-            Guid guid = Guid.NewGuid();
-            AntObject antObject = new AntObject(antSpeed, antCoordinates, content.antTexture, antCoordinates, guid);
+            AntObject antObject = new AntObject(antSpeed, antCoordinates, content.antTexture, antCoordinates);
             antObject.OnNectarPickUp += AntOnNectarPickUp;
-            antBag.TryAdd(guid, antObject);
+            antBag.TryAdd(antObject.GetGuid(), antObject);
         }
 
         private void AntOnNectarPickUp(object sender, EventArgs e)

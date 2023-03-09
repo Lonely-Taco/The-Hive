@@ -15,6 +15,7 @@ namespace Hive.Common
         protected Texture2D texture;
         protected Vector2 position;
         protected float scale;
+        protected Guid guid;
 
         public Vector2 Position { get => position; set => position = value; }
         public Texture2D Texture { get => texture; set => texture = value; }
@@ -24,6 +25,7 @@ namespace Hive.Common
             this.texture = texture;
             this.Position = position;
             this.scale = scale;
+            this.guid = Guid.NewGuid();
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -36,5 +38,9 @@ namespace Hive.Common
 
         }
 
+        public Guid GetGuid()
+        {
+            return guid;
+        }
     }
 }
