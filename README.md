@@ -47,7 +47,7 @@ Tasks for ant finding the nearest nectar drop on the hive map.
 * Semaphore for map. Increase allowed number of threads through upgrades.
 The number of tasks for the hive map will be limited by a semaphore. This way, not too many calculations for tasks will be done at the same time, keeping the requirements of running The Hive low. Ants will have to wait until there is room in the semaphore if the semaphore is full. In the menu the semaphore count can be altered.
 
-## Delagates
+## Async I/O
 
-* For clicking buttons/ manually collecting nectar.
-To make sure the game remains responsive after a button has been pressed, delegates will be used to handle any interactions the user has with the UI of the game. These interactions include manually claiming nectar and buying from the shops. This approach will allow these interactions to be performed asynchronously in the background, without freezing the 
+* In the settings page the semaphore number and ant color will be set. Saving will transport these settings to a local file which will be retrievable. Writing and reading to and from this file will be done with async I/O so the application doesn’t stall
+
