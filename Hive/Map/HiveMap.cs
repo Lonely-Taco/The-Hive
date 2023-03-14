@@ -91,20 +91,18 @@ namespace Hive.Map
 
         private void AntOnNectarTargeted(object sender, EventArgs e)
         {
-            AntObject ant = (AntObject)sender;
+            AntObject ant = (AntObject) sender;
             nectarToPickUpBag.TryRemove(ant.CurrentTarget.GetGuid(), out _);
             nectarTargetedBag.TryAdd(ant.CurrentTarget.GetGuid(), ant.CurrentTarget);
-
             antIdleBag.TryRemove(ant.GetGuid(), out _);
             antActiveBag.TryAdd(ant.GetGuid(), ant);
         }
 
         private void AntOnNectarPickUp(object sender, EventArgs e)
         {
-            AntObject ant = (AntObject)sender;
+            AntObject ant = (AntObject) sender;
             nectarTargetedBag.TryRemove(ant.CurrentTarget.GetGuid(), out _);
             ant.CurrentTarget = null;
-
             antActiveBag.TryRemove(ant.GetGuid(), out _);
             antIdleBag.TryAdd(ant.GetGuid(), ant);
         }
@@ -118,7 +116,6 @@ namespace Hive.Map
             {
                 ant.SetCurrentDestination(nectar);
             }
-
 
             foreach (AntObject activeAnt in antActiveBag.Values)
             {
@@ -161,7 +158,6 @@ namespace Hive.Map
             }
 
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
 
             MoveAllAnts(nectarToPickUpBag);
 

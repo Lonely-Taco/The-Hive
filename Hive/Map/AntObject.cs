@@ -15,7 +15,6 @@ namespace Hive.Map
         private Vector2 currentDestination;
         private Vector2 currentDirection;
         private NectarObject currentTarget;
-
         private int speed;
 
         public NectarObject CurrentTarget { get => currentTarget; set => currentTarget = value; }
@@ -31,17 +30,17 @@ namespace Hive.Map
         public NectarObject GetNearestNectar(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
             float shortestDistance = float.MaxValue;
-
             NectarObject nearestNectar = null;
 
-            if(currentTarget!= null)
+            if (currentTarget!= null)
             {
                 return currentTarget;  
             }
 
             foreach (NectarObject nectarObject in nectarObjects.Values)
             {
-                float distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());
+                var distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());
+                
                 if (distance < shortestDistance)
                 {
                     shortestDistance = distance;
@@ -65,20 +64,16 @@ namespace Hive.Map
                 currentDirection = currentDestination - Position;
                 currentTarget = nectar;
                 currentDirection.Normalize();
-
                 OnNectarTargeted?.Invoke(this, EventArgs.Empty);
 
                 return;
             }
 
             currentDirection = Vector2.Zero;
-
         }
 
         public void Move()
         {
-            //SetCurrentDestination(nectar);
-
             if (currentTarget == null)
             {
                 return;
