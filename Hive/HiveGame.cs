@@ -87,7 +87,7 @@ namespace Hive
             this.expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter, new Vector2(0, 210));
             entities.Add(expansionShop);
 
-            this.hiveMap = new HiveMap(512, 512, 0.05f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader, this);
+            this.hiveMap = new HiveMap(512, 512, 0.5f, contentLoader.mapTexture, new Vector2(788, 218), contentLoader, this);
             entities.Add(hiveMap);
 
             this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);

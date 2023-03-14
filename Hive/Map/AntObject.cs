@@ -14,7 +14,6 @@ namespace Hive.Map
     {
         private Vector2 currentDestination;
         private Vector2 currentDirection;
-        private Destination destination;
         private NectarObject currentTarget;
 
         private int speed;
@@ -22,6 +21,7 @@ namespace Hive.Map
         public NectarObject CurrentTarget { get => currentTarget; set => currentTarget = value; }
 
         public event EventHandler OnNectarPickUp;
+        public event EventHandler OnNectarTargeted;
 
         public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
         {
@@ -33,6 +33,11 @@ namespace Hive.Map
             float shortestDistance = float.MaxValue;
 
             NectarObject nearestNectar = null;
+
+            if(currentTarget!= null)
+            {
+                return currentTarget;  
+            }
 
             foreach (NectarObject nectarObject in nectarObjects.Values)
             {
@@ -52,21 +57,28 @@ namespace Hive.Map
             base.Update(gameTime);
         }
 
-        internal void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarList)
+        public void SetCurrentDestination(NectarObject nectar)
         {
-            NectarObject nectar = GetNearestNectar(nectarList);
-
             if (nectar != null)
             {
                 currentDestination = nectar.Position;
                 currentDirection = currentDestination - Position;
                 currentTarget = nectar;
                 currentDirection.Normalize();
+
+                OnNectarTargeted?.Invoke(this, EventArgs.Empty);
+
+                return;
             }
+
+            currentDirection = Vector2.Zero;
+
         }
 
-        public void Move(ConcurrentDictionary<Guid, NectarObject> nectarList)
+        public void Move()
         {
+            //SetCurrentDestination(nectar);
+
             if (currentTarget == null)
             {
                 return;

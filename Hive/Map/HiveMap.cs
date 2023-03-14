@@ -19,8 +19,10 @@ namespace Hive.Map
     {
         private ContentLoader content;
 
-        private ConcurrentDictionary<Guid, AntObject> antBag = new ConcurrentDictionary<Guid, AntObject>();
-        private ConcurrentDictionary<Guid, NectarObject> nectarBag = new ConcurrentDictionary<Guid, NectarObject>();
+        private ConcurrentDictionary<Guid, AntObject> antIdleBag = new ConcurrentDictionary<Guid, AntObject>();
+        private ConcurrentDictionary<Guid, AntObject> antActiveBag = new ConcurrentDictionary<Guid, AntObject>();
+        private ConcurrentDictionary<Guid, NectarObject> nectarToPickUpBag = new ConcurrentDictionary<Guid, NectarObject>();
+        private ConcurrentDictionary<Guid, NectarObject> nectarTargetedBag = new ConcurrentDictionary<Guid, NectarObject>();
         private HiveGame game;
         private AntShop antShop;
         private ExpansionShop expansionShop;
@@ -68,11 +70,12 @@ namespace Hive.Map
         {
             Random rnd = new Random();
             float chance = rnd.Next(0, 1);
+
             if (chance <= dropChance)
             {
                 Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
                 NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates);
-                nectarBag.TryAdd(nectar.GetGuid(), nectar);
+                nectarToPickUpBag.TryAdd(nectar.GetGuid(), nectar);
             }
         }
 
@@ -82,24 +85,71 @@ namespace Hive.Map
             var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
             AntObject antObject = new AntObject(antSpeed, antCoordinates, content.antTexture, antCoordinates);
             antObject.OnNectarPickUp += AntOnNectarPickUp;
-            antBag.TryAdd(antObject.GetGuid(), antObject);
+            antObject.OnNectarTargeted += AntOnNectarTargeted;
+            antIdleBag.TryAdd(antObject.GetGuid(), antObject);
+        }
+
+        private void AntOnNectarTargeted(object sender, EventArgs e)
+        {
+            AntObject ant = (AntObject)sender;
+            nectarToPickUpBag.TryRemove(ant.CurrentTarget.GetGuid(), out _);
+            nectarTargetedBag.TryAdd(ant.CurrentTarget.GetGuid(), ant.CurrentTarget);
+
+            antIdleBag.TryRemove(ant.GetGuid(), out _);
+            antActiveBag.TryAdd(ant.GetGuid(), ant);
         }
 
         private void AntOnNectarPickUp(object sender, EventArgs e)
         {
-            AntObject ant = (AntObject) sender;
-            nectarBag.TryRemove(ant.CurrentTarget.GetGuid(), out _);
+            AntObject ant = (AntObject)sender;
+            nectarTargetedBag.TryRemove(ant.CurrentTarget.GetGuid(), out _);
+            ant.CurrentTarget = null;
+
+            antActiveBag.TryRemove(ant.GetGuid(), out _);
+            antIdleBag.TryAdd(ant.GetGuid(), ant);
         }
 
         public void MoveAllAnts(ConcurrentDictionary<Guid, NectarObject> nectarList)
         {
-            foreach (var ant in antBag)
+            
+            GetClosestAntToNectar(out AntObject ant, out NectarObject nectar);
+
+            if (nectar != null || ant != null)
             {
-                ant.Value.Move(nectarList);
+                ant.SetCurrentDestination(nectar);
             }
-    
+
+
+            foreach (AntObject activeAnt in antActiveBag.Values)
+            {
+                activeAnt.Move();
+            }
+
         }
 
+        internal void GetClosestAntToNectar(out AntObject ant, out NectarObject nectar)
+        {
+            float shortestDistance = float.MaxValue;
+            AntObject nearestAnt = null;
+            NectarObject nearestNectar = null;
+
+            foreach (NectarObject nectarObject in nectarToPickUpBag.Values)
+            {
+                foreach (AntObject antObject in antIdleBag.Values)
+                {
+                    float distance = Vector2.Distance(nectarObject.GetMapCoordinates(), antObject.GetMapCoordinates());
+
+                    if (distance < shortestDistance)
+                    {
+                        shortestDistance = distance;
+                        nearestAnt = antObject;
+                        nearestNectar = nectarObject;
+                    }
+                }
+            }
+            nectar = nearestNectar;
+            ant = nearestAnt;
+        }
 
         public override void Update(GameTime gameTime)
         {
@@ -111,9 +161,11 @@ namespace Hive.Map
             }
 
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-            
-            MoveAllAnts(nectarBag);
-            foreach (var ant in antBag)
+
+
+            MoveAllAnts(nectarToPickUpBag);
+
+            foreach (var ant in antActiveBag)
             {
                 ant.Value.Update(gameTime);
             }
@@ -124,14 +176,22 @@ namespace Hive.Map
         {
             base.Draw(gameTime, spriteBatch);
 
-            spriteBatch.DrawString(content.counterFont, nectarBag.Count().ToString(), new Vector2(500,500), Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
-
-            foreach (KeyValuePair <Guid, AntObject> ant in antBag)
+            foreach (KeyValuePair<Guid, AntObject> ant in antIdleBag)
             {
                 ant.Value.Draw(gameTime, spriteBatch);
             }
 
-            foreach (KeyValuePair<Guid, NectarObject> nectar in nectarBag)
+            foreach (KeyValuePair<Guid, AntObject> ant in antActiveBag)
+            {
+                ant.Value.Draw(gameTime, spriteBatch);
+            }
+
+            foreach (KeyValuePair<Guid, NectarObject> nectar in nectarToPickUpBag)
+            {
+                nectar.Value.Draw(gameTime, spriteBatch);
+            }
+
+            foreach (KeyValuePair<Guid, NectarObject> nectar in nectarTargetedBag)
             {
                 nectar.Value.Draw(gameTime, spriteBatch);
             }
