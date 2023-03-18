@@ -22,6 +22,7 @@ namespace Hive.Utility
         public Texture2D menuButtonTexture;
         public Texture2D menuBackgroundTexture;
         public Texture2D menuSceneBackgroundTexture;
+        public Texture2D settingsButtonTexture;
 
         public SpriteFont counterFont;
 
@@ -37,6 +38,7 @@ namespace Hive.Utility
             menuButtonTexture          = game.Content.Load<Texture2D>("Textures/MenuButton");
             menuBackgroundTexture      = game.Content.Load<Texture2D>("Textures/MenuBackground");
             menuSceneBackgroundTexture = game.Content.Load<Texture2D>("Textures/MenuSceneBackground");
+            settingsButtonTexture = game.Content.Load<Texture2D>("Textures/SettingsButton");
             containerTexture           = game.Content.Load<Texture2D>("Textures/Container");
             costBackgroundTexture      = game.Content.Load<Texture2D>("Textures/CostBackground");
             expansionIconTexture       = game.Content.Load<Texture2D>("Textures/ExpansionIcon");

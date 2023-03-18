@@ -32,17 +32,19 @@ namespace Hive
         private State                 nextState;
         private MenuState             menuState;
         private GameState             gameState;
+        private SettingsState         settingState;
 
         public static int screenSizeX = 1300;
         public static int screenSizeY = 730;
 
         #endregion
-        
+
         #region Properties
 
         public MenuState MenuState => menuState;
 
         public GameState GameState => gameState;
+        public SettingsState SettingState => settingState;
 
         public int ScreenSizeX => screenSizeX;
 
@@ -88,29 +90,23 @@ namespace Hive
             Counter.Initialize(contentLoader.containerTexture, contentLoader.counterFont);
             EventText.Initialize(contentLoader.counterFont);
 
-            MenuState.Initialize(
+            State.Initialize(
                 contentLoader.counterFont,
                 contentLoader.menuButtonTexture,
                 contentLoader.menuBackgroundTexture,
-                contentLoader.menuSceneBackgroundTexture
+                contentLoader.menuSceneBackgroundTexture,
+                contentLoader.settingsButtonTexture
             );
 
-            GameState.Initialize(
-                contentLoader.counterFont,
-                contentLoader.menuButtonTexture,
-                contentLoader.menuBackgroundTexture,
-                contentLoader.menuSceneBackgroundTexture
-            );
-
-            this.antCounter = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
-            this.nectarCounter = new Counter(new Vector2(0, 57), contentLoader.nectarTexture, 1f);
-            this.expansionCounter = new Counter(new Vector2(976, 175), contentLoader.expansionIconTexture, 1f);
-            this.antShop = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 170));
-            this.expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter,
-                                                   new Vector2(0, 210));
-            this.hiveMap = new HiveMap(512, 512, 0.5f, contentLoader.mapTexture,
-                                       new Vector2(788, 218), contentLoader, this);
-            this.dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
+            antCounter       = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
+            nectarCounter    = new Counter(new Vector2(0, 57), contentLoader.nectarTexture, 1f);
+            expansionCounter = new Counter(new Vector2(976, 175), contentLoader.expansionIconTexture, 1f);
+            antShop          = new AntShop(contentLoader.antTexture, antCounter, nectarCounter, new Vector2(0, 170));
+            expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter,
+                                              new Vector2(0, 210));
+            hiveMap = new HiveMap(512, 512, 0.5f, contentLoader.mapTexture,
+                                  new Vector2(788, 218), contentLoader, this);
+            dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
 
             gameState = new GameState(new Vector2(0, 0), 1f,
                                       new List<IEntity>
@@ -131,26 +127,26 @@ namespace Hive
             currentState = menuState;
         }
 
-        private void Quit()
+        internal void Quit()
+        {
+            this.Exit();
+        }
+
+        private void Pause()
         {
             if (currentState == gameState)
             {
                 ChangeState(menuState);
-                return;
             }
-
-            this.Exit();
         }
 
         private void UpdateState(GameTime gameTime)
         {
-            if (nextState != null)
-            {
-                currentState = nextState;
-                nextState    = null;
-            }
-            
-            base.Update(gameTime);
+            if (nextState == null)
+                return;
+
+            currentState = nextState;
+            nextState    = null;
         }
 
         public void ChangeState(State state)
@@ -162,14 +158,12 @@ namespace Hive
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
-                this.Quit();
+                Pause();
 
             // TODO: Add your update logic here
 
-            UpdateState(gameTime);
-
             InputManager.Update(gameTime);
-
+            UpdateState(gameTime);
             currentState.Update(gameTime);
 
             base.Update(gameTime);

@@ -12,6 +12,7 @@ public abstract class State : DrawnEntity
     protected static Texture2D  menuButtonTexture;
     protected static Texture2D  menuBackgroundTexture;
     protected static Texture2D  sceneBackgroundTexture;
+    protected static Texture2D  settingButtonTexture;
 
     private List<IEntity> entities = new();
 
@@ -37,14 +38,15 @@ public abstract class State : DrawnEntity
     }
 
 
-    public static void Initialize(SpriteFont fontSprite, Texture2D buttonTexture, Texture2D backgroundTexture, Texture2D sceneTexture)
+    public static void Initialize(SpriteFont fontSprite, Texture2D buttonTexture, Texture2D backgroundTexture,
+                                  Texture2D sceneTexture, Texture2D settingButtonTexture)
     {
-        font                   = fontSprite;
-        menuBackgroundTexture  = backgroundTexture;
-        menuButtonTexture      = buttonTexture;
-        sceneBackgroundTexture = sceneTexture;
+        font                       = fontSprite;
+        menuBackgroundTexture      = backgroundTexture;
+        menuButtonTexture          = buttonTexture;
+        sceneBackgroundTexture     = sceneTexture;
+        State.settingButtonTexture = settingButtonTexture;
     }
 
     public abstract Task ExecuteState();
-
 }

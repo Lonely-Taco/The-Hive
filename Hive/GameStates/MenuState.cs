@@ -12,39 +12,61 @@ namespace Hive.GameStates;
 
 public class MenuState : State
 {
-    protected Vector2     buttonOffset = new Vector2(250, 50);
-    protected Vector2     textOffset   = new Vector2(100, 10);
+    #region Fields
+
     protected DrawnEntity menuBackground;
     protected DrawnEntity sceneBackground;
-    protected Vector2     backgroundOffset = new Vector2(85, 8);
     protected Button      playButton;
     protected Button      settingsButton;
+    protected Button      exitButton;
+
+    #endregion
+
 
     public MenuState(Vector2 position, float scale, List<IEntity> entities, HiveGame game) : base(
         position, scale, entities, game)
     {
-        playButton = new Button(menuButtonTexture, 
-                                position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY  * .15f),
-                                "Start", 
-                                font, 
-                                .25f * scale
-                                );
-        settingsButton = new Button(menuButtonTexture, 
-                                    position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY  * .30f), 
-                                    "Config", 
-                                    font, 
-                                    .25f * scale);
-        
-        menuBackground = new DrawnEntity(menuBackgroundTexture, 
-                                         new Vector2(game.ScreenSizeX * .25f, game.ScreenSizeY  * .25f),
-                                         .75f * scale);
-        
-        sceneBackground = new DrawnEntity(sceneBackgroundTexture, 
-                                          new Vector2(0, 0), 
+        sceneBackground = new DrawnEntity(sceneBackgroundTexture,
+                                          new Vector2(0, 0),
                                           scale);
+        entities.Add(sceneBackground);
         
-        playButton.Click += PlayButtonOnClick;
+        menuBackground = new DrawnEntity(menuBackgroundTexture,
+                                         new Vector2(game.ScreenSizeX * .25f, game.ScreenSizeY * .25f),
+                                         .65f * scale);
+        entities.Add(menuBackground);
+        
+        
+        playButton = new Button(menuButtonTexture,
+                                position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .10f),
+                                "Start",
+                                font,
+                                .20f * scale
+        );
+        entities.Add(playButton);
+        
+        settingsButton = new Button(menuButtonTexture,
+                                    position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .20f),
+                                    "Config",
+                                    font,
+                                    .20f * scale);
+        entities.Add(settingsButton);
+        
+        exitButton = new Button(menuButtonTexture,
+                                position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .30f),
+                                "Exit",
+                                font,
+                                .20f * scale);
+        entities.Add(exitButton);
+        
+        playButton.Click     += PlayButtonOnClick;
         settingsButton.Click += SettingsButtonOnClick;
+        exitButton.Click     += ExitButtonOnClick;
+    }
+
+    private void ExitButtonOnClick(object sender, EventArgs e)
+    {
+        Task.Factory.StartNew(game.Quit);
     }
 
     private void SettingsButtonOnClick(object sender, EventArgs e)
@@ -64,31 +86,32 @@ public class MenuState : State
 
     public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
     {
-        sceneBackground.Draw(gameTime, spriteBatch);
-        menuBackground.Draw(gameTime, spriteBatch);
-        spriteBatch.DrawString(font, 
-                               "HIVE", 
-                               new Vector2(game.ScreenSizeX * .30f, game.ScreenSizeY  * .30f), 
-                               Color.Black, 
-                               0f, 
+        foreach (var entity in Entities)
+        {
+            entity.Draw(gameTime, spriteBatch);
+        }
+        
+        spriteBatch.DrawString(font,
+                               "HIVE",
+                               new Vector2(game.ScreenSizeX * .30f, game.ScreenSizeY * .30f),
+                               Color.Black,
+                               0f,
                                Vector2.Zero,
                                scale * 6,
                                SpriteEffects.None,
                                1);
-        
-        playButton.Draw(gameTime, spriteBatch);
-        settingsButton.Draw(gameTime, spriteBatch);
     }
 
     public override void Update(GameTime gameTime)
     {
-        playButton.Update(gameTime);
-        settingsButton.Update(gameTime);
+        foreach (var entity in Entities)
+        {
+            entity.Update(gameTime);
+        }
     }
 
     public override async Task ExecuteState()
     {
-        Debug.WriteLine("starting game");
         game.ChangeState(game.GameState);
     }
 }
