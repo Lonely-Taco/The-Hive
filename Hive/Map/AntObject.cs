@@ -12,22 +12,23 @@ namespace Hive.Map
 {
     internal class AntObject : HiveMapObject
     {
-        private Vector2 currentDestination;
+        private Vector2? currentDestination;
         private Vector2 currentDirection;
         private NectarObject currentTarget;
         private int speed;
+        private AntState _state;
 
         public NectarObject CurrentTarget { get => currentTarget; set => currentTarget = value; }
 
-        public event EventHandler OnNectarPickUp;
-        public event EventHandler OnNectarTargeted;
+        public event EventHandler OnStateChanged;
 
         public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
         {
             this.speed = speed;
+            _state = AntState.Idle;
         }
 
-        public NectarObject GetNearestNectar(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
+        private NectarObject GetNearestNectar(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
             float shortestDistance = float.MaxValue;
             NectarObject nearestNectar = null;
@@ -56,16 +57,16 @@ namespace Hive.Map
             base.Update(gameTime);
         }
 
-        public void SetCurrentDestination(NectarObject nectar)
+        public void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
+            NectarObject nectar = GetNearestNectar(nectarObjects);
             if (nectar != null)
             {
                 currentDestination = nectar.Position;
-                currentDirection = currentDestination - Position;
+                currentDirection = currentDestination.Value - Position;
                 currentTarget = nectar;
                 currentDirection.Normalize();
-                OnNectarTargeted?.Invoke(this, EventArgs.Empty);
-
+                SetState(AntState.Moving);
                 return;
             }
 
@@ -81,10 +82,28 @@ namespace Hive.Map
 
             Position += currentDirection * speed;
 
-            if (Vector2.Distance(Position, currentDestination) < 1f)
+            if (Vector2.Distance(Position, currentDestination.Value) < 1f)
             {
-                OnNectarPickUp?.Invoke(this, EventArgs.Empty);
+                currentTarget.Claim();
+                SetState(AntState.Idle);
             }
+        }
+        public AntState GetState()
+        {
+            return _state;
+        }
+        public void SetState(AntState newState)
+        {
+            if (newState == _state) return;
+            _state = newState;
+            OnStateChanged.Invoke(this, EventArgs.Empty);
+        }
+
+        private void ResetTarget()
+        {
+            this.currentDestination = null;
+            this.currentTarget = null;
+            this.currentDirection = Vector2.Zero;
         }
     }
 }

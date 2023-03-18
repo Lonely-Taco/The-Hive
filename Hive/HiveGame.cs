@@ -105,7 +105,7 @@ namespace Hive
             expansionShop = new ExpansionShop(contentLoader.expansionIconTexture, expansionCounter, nectarCounter,
                                               new Vector2(0, 210));
             hiveMap = new HiveMap(512, 512, 0.5f, contentLoader.mapTexture,
-                                  new Vector2(788, 218), contentLoader, this);
+                                  new Vector2(788, 218), contentLoader, this, nectarCounter);
             dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
 
             gameState = new GameState(new Vector2(0, 0), 1f,

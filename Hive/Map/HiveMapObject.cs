@@ -12,7 +12,7 @@ namespace Hive.Map
     public abstract class HiveMapObject : DrawnEntity
     {
         protected Vector2 mapCoordinates;
-     
+
         protected HiveMapObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(texture, position, 1f)
         {
             this.mapCoordinates = mapCoordinates;
@@ -21,11 +21,6 @@ namespace Hive.Map
         public Vector2 GetMapCoordinates()
         {
             return this.mapCoordinates;   
-        }
-
-        public Guid GetGuid()
-        {
-            return this.guid;
         }
     }
 }
