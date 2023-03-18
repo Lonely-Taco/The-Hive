@@ -21,24 +21,26 @@ namespace Hive.Utility
         public Texture2D expansionIconTexture;
         public Texture2D menuButtonTexture;
         public Texture2D menuBackgroundTexture;
+        public Texture2D menuSceneBackgroundTexture;
 
         public SpriteFont counterFont;
 
         public ContentLoader(HiveGame game)
         {
-            nectarTexture         = game.Content.Load<Texture2D>("Textures/Nectar");
-            shopTexture           = game.Content.Load<Texture2D>("Textures/Missing");
-            mapTexture            = game.Content.Load<Texture2D>("Textures/AntMap");
-            backgroundTexture     = game.Content.Load<Texture2D>("Textures/missing");
-            antTexture            = game.Content.Load<Texture2D>("Textures/Ant");
-            counterTexture        = game.Content.Load<Texture2D>("Textures/Missing");
-            buyButtonTexture      = game.Content.Load<Texture2D>("Textures/BuyButton");
-            menuButtonTexture     = game.Content.Load<Texture2D>("Textures/MenuButton");
-            menuBackgroundTexture = game.Content.Load<Texture2D>("Textures/MenuBackground");
-            containerTexture      = game.Content.Load<Texture2D>("Textures/Container");
-            costBackgroundTexture = game.Content.Load<Texture2D>("Textures/CostBackground");
-            expansionIconTexture  = game.Content.Load<Texture2D>("Textures/ExpansionIcon");
-            counterFont           = game.Content.Load<SpriteFont>("Fonts/DefaultFont");
+            nectarTexture              = game.Content.Load<Texture2D>("Textures/Nectar");
+            shopTexture                = game.Content.Load<Texture2D>("Textures/Missing");
+            mapTexture                 = game.Content.Load<Texture2D>("Textures/AntMap");
+            backgroundTexture          = game.Content.Load<Texture2D>("Textures/Background");
+            antTexture                 = game.Content.Load<Texture2D>("Textures/Ant");
+            counterTexture             = game.Content.Load<Texture2D>("Textures/Missing");
+            buyButtonTexture           = game.Content.Load<Texture2D>("Textures/BuyButton");
+            menuButtonTexture          = game.Content.Load<Texture2D>("Textures/MenuButton");
+            menuBackgroundTexture      = game.Content.Load<Texture2D>("Textures/MenuBackground");
+            menuSceneBackgroundTexture = game.Content.Load<Texture2D>("Textures/MenuSceneBackground");
+            containerTexture           = game.Content.Load<Texture2D>("Textures/Container");
+            costBackgroundTexture      = game.Content.Load<Texture2D>("Textures/CostBackground");
+            expansionIconTexture       = game.Content.Load<Texture2D>("Textures/ExpansionIcon");
+            counterFont                = game.Content.Load<SpriteFont>("Fonts/DefaultFont");
         }
     }
 }

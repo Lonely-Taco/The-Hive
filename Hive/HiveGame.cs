@@ -16,42 +16,44 @@ namespace Hive
 {
     public class HiveGame : Game
     {
+        #region Fields
+
         private GraphicsDeviceManager _graphics;
         private SpriteBatch           _spriteBatch;
+        private ContentLoader         contentLoader;
+        private Counter               antCounter;
+        private Counter               nectarCounter;
+        private Counter               expansionCounter;
+        private AntShop               antShop;
+        private ExpansionShop         expansionShop;
+        private HiveMap               hiveMap;
+        private DropManager           dropManager;
+        private State                 currentState;
+        private State                 nextState;
+        private MenuState             menuState;
+        private GameState             gameState;
 
-        private List<State> states = new();
+        public static int screenSizeX = 1300;
+        public static int screenSizeY = 730;
 
-        private ContentLoader contentLoader;
-        private Counter       antCounter;
-        private Counter       nectarCounter;
-        private Counter       expansionCounter;
-        private AntShop       antShop;
-        private ExpansionShop expansionShop;
-        private HiveMap       hiveMap;
-        private DropManager   dropManager;
-
-        private State currentState;
-        private State nextState;
-
-        private MenuState menuState;
-        private GameState gameState;
+        #endregion
+        
+        #region Properties
 
         public MenuState MenuState => menuState;
 
         public GameState GameState => gameState;
 
-        public static int screenSizeX = 1300;
-        public static int screenSizeY = 730;
+        public int ScreenSizeX => screenSizeX;
 
-        public ExpansionShop ExpansionShop
-        {
-            get => expansionShop;
-        }
+        public int ScreenSizeY => screenSizeY;
 
-        public AntShop AntShop
-        {
-            get => antShop;
-        }
+        public ExpansionShop ExpansionShop => expansionShop;
+
+        public AntShop AntShop => antShop;
+
+        #endregion
+
 
         public HiveGame()
         {
@@ -63,7 +65,7 @@ namespace Hive
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            
+
             _graphics.IsFullScreen              = false;
             _graphics.PreferredBackBufferWidth  = screenSizeX;
             _graphics.PreferredBackBufferHeight = screenSizeY;
@@ -89,7 +91,15 @@ namespace Hive
             MenuState.Initialize(
                 contentLoader.counterFont,
                 contentLoader.menuButtonTexture,
-                contentLoader.menuBackgroundTexture
+                contentLoader.menuBackgroundTexture,
+                contentLoader.menuSceneBackgroundTexture
+            );
+
+            GameState.Initialize(
+                contentLoader.counterFont,
+                contentLoader.menuButtonTexture,
+                contentLoader.menuBackgroundTexture,
+                contentLoader.menuSceneBackgroundTexture
             );
 
             this.antCounter = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
@@ -119,13 +129,16 @@ namespace Hive
             this.menuState = new MenuState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
 
             currentState = menuState;
-            
-            this.states.Add(menuState);
-            this.states.Add(gameState);
         }
 
         private void Quit()
         {
+            if (currentState == gameState)
+            {
+                ChangeState(menuState);
+                return;
+            }
+
             this.Exit();
         }
 
@@ -136,12 +149,11 @@ namespace Hive
                 currentState = nextState;
                 nextState    = null;
             }
-
-            currentState.Update(gameTime);
+            
             base.Update(gameTime);
         }
 
-       public void ChangeState(State state)
+        public void ChangeState(State state)
         {
             nextState = state;
         }
@@ -154,24 +166,23 @@ namespace Hive
 
             // TODO: Add your update logic here
 
-            base.Update(gameTime);
+            UpdateState(gameTime);
 
             InputManager.Update(gameTime);
-            
+
             currentState.Update(gameTime);
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            UpdateState(gameTime);
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin();
-
             currentState.Draw(gameTime, _spriteBatch);
-
             _spriteBatch.End();
 
             base.Draw(gameTime);

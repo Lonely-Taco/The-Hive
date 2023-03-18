@@ -11,8 +11,9 @@ public abstract class State : DrawnEntity
     protected static SpriteFont font;
     protected static Texture2D  menuButtonTexture;
     protected static Texture2D  menuBackgroundTexture;
+    protected static Texture2D  sceneBackgroundTexture;
 
-    protected List<IEntity> entities = new List<IEntity>();
+    private List<IEntity> entities = new();
 
     protected HiveGame game;
 
@@ -22,12 +23,11 @@ public abstract class State : DrawnEntity
         set => game = value;
     }
 
-    public List<IEntity> Entities
+    protected List<IEntity> Entities
     {
         get => entities;
         set => entities = value;
     }
-
 
     protected State(Vector2 position, float scale, List<IEntity> entities, HiveGame game) : base(
         menuBackgroundTexture, position, 0.2f * scale)
@@ -37,11 +37,12 @@ public abstract class State : DrawnEntity
     }
 
 
-    public static void Initialize(SpriteFont font, Texture2D menuButtonTexture, Texture2D menuBackgroundTexture)
+    public static void Initialize(SpriteFont fontSprite, Texture2D buttonTexture, Texture2D backgroundTexture, Texture2D sceneTexture)
     {
-        State.font                  = font;
-        State.menuBackgroundTexture = menuBackgroundTexture;
-        State.menuButtonTexture     = menuButtonTexture;
+        font                   = fontSprite;
+        menuBackgroundTexture  = backgroundTexture;
+        menuButtonTexture      = buttonTexture;
+        sceneBackgroundTexture = sceneTexture;
     }
 
     public abstract Task ExecuteState();
