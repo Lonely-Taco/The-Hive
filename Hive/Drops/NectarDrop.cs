@@ -16,7 +16,6 @@ namespace Hive.Drops
         private float fallSpeed = 0;
         private IDropBehaviour dropBehaviour;
 
-
         public NectarDrop(Counter nectarCounter, Texture2D texture, Vector2 position, DropManager dropManager, IDropBehaviour dropBehaviour) : base(texture, position, 1f)
         {
             this.nectarCounter = nectarCounter;
@@ -32,7 +31,7 @@ namespace Hive.Drops
 
         public virtual async void Claim()
         {
-            int addedNectar = await dropBehaviour.Claim(nectarCounter, dropManager);
+            int addedNectar = await dropBehaviour.Claim(nectarCounter);
             dropManager.AddEventText(position, scale * 1.5f, $"+{addedNectar.ToString()}", Color.Orange, 0.5f);
             dropManager.RemoveDrop(this);
         }

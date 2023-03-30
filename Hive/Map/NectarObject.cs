@@ -3,6 +3,7 @@ using Hive.Utility;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Threading;
 
 namespace Hive.Map
 {
@@ -10,18 +11,28 @@ namespace Hive.Map
     {
         protected Counter nectarCounter;
         public EventHandler onClaim;
-        public NectarObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position, Counter nectarCounter) : base(mapCoordinates, texture, position)
+        private bool IsClaimed;
+        private IDropBehaviour dropBehaviour;
+        Object locker = new object();
+        public NectarObject(Texture2D texture, Vector2 position, Counter nectarCounter, IDropBehaviour dropBehaviour) : base(texture, position)
         {
             this.nectarCounter = nectarCounter;
-
+            this.IsClaimed = false;
+            this.dropBehaviour = dropBehaviour;
         }
 
-        public async void Claim()
+        public void Claim()
         {
-            int addedNectar = await nectarCounter.Add(1);
-            onClaim.Invoke(this, EventArgs.Empty);
+            lock (this.locker)
+            {
+                if (!this.IsClaimed)
+                {
+                    dropBehaviour.Claim(nectarCounter);
+                    onClaim.Invoke(this, EventArgs.Empty);
+                    this.IsClaimed = true;
+                }
+            }
         }
-
 
         public override void Update(GameTime gameTime)
         {

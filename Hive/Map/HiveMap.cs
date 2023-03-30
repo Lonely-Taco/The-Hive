@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -25,33 +26,34 @@ namespace Hive.Map
         private HiveGame game;
         private AntShop antShop;
         private ExpansionShop expansionShop;
-        private Semaphore antNavigationSemaphore;
+        private SemaphoreSlim antNavigationSemaphore;
         private Counter nectarCounter;
+        private Counter expansionCounter;
 
         private float elapsedDropSpawnTime = 0;
-        private float _dropSpawnTimeInterval = 5f;
+        private float _baseDropSpawnTimeInterval = 5f;
 
         private int width;
         private int height;
-        private int antSpeed = 1;
+        private int antSpeed = 3;
         private float dropChance;
 
-        private const int MAX_ANT_NAV_TASKS = 5;
+        private const int MAX_ANT_NAV_TASKS = 10;
 
         private float DropSpawnTimeInterval
         {
             get
             {
-                return _dropSpawnTimeInterval;
+                return _baseDropSpawnTimeInterval / (expansionCounter.GetCount() + 1);
             }
             set
             {
-                _dropSpawnTimeInterval = value;
+                _baseDropSpawnTimeInterval = value;
                 elapsedDropSpawnTime = 0;
             }
         }
 
-        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content, HiveGame game, Counter nectarCounter) : base(texture, position, 1f)
+        public HiveMap(int width, int height, float dropChance, Texture2D texture, Vector2 position, ContentLoader content, HiveGame game, Counter nectarCounter, Counter expansionCounter) : base(texture, position, 1f)
         {
             this.content = content;
             this.width = width;
@@ -61,8 +63,9 @@ namespace Hive.Map
             this.antShop = game.AntShop;
             this.antShop.OnBuy += AntOnBuy;
             this.expansionShop = game.ExpansionShop;
-            this.antNavigationSemaphore = new Semaphore(0, MAX_ANT_NAV_TASKS);
+            this.antNavigationSemaphore = new SemaphoreSlim(MAX_ANT_NAV_TASKS);
             this.nectarCounter = nectarCounter;
+            this.expansionCounter = expansionCounter;
         }
 
         private void AntOnBuy(object sender, EventArgs e)
@@ -78,7 +81,7 @@ namespace Hive.Map
             if (chance <= dropChance)
             {
                 Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-                NectarObject nectar = new NectarObject(nectarCoordinates, this.content.nectarTexture, nectarCoordinates, nectarCounter);
+                NectarObject nectar = new NectarObject(this.content.nectarTexture, nectarCoordinates, nectarCounter, new RegularNectarDropBehaviour());
                 nectarBag.TryAdd(nectar.GetGuid(), nectar);
                 nectar.onClaim += OnNectarClaim;
             }
@@ -88,7 +91,7 @@ namespace Hive.Map
         {
             Random rnd = new Random();
             var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-            AntObject antObject = new AntObject(antSpeed, antCoordinates, content.antTexture, antCoordinates);
+            AntObject antObject = new AntObject(antSpeed, content.antTexture, antCoordinates);
             antObject.OnStateChanged += AntOnStateChanged;
             antBag.TryAdd(antObject.GetGuid(), antObject);
             antIdleBag.TryAdd(antObject.GetGuid(), antObject);
@@ -135,7 +138,6 @@ namespace Hive.Map
                 elapsedDropSpawnTime = 0;
             }
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             SetDestinations();
 
             MoveAllAnts(nectarBag);
@@ -149,20 +151,31 @@ namespace Hive.Map
 
         private void SetDestinations()
         {
-            foreach(AntObject ant in antIdleBag.Values)
+            var rand = new Random();
+            foreach (AntObject ant in antIdleBag.Values.OrderBy(x => rand.Next()))
             {
                 if (nectarBag.IsEmpty) return;
                 ant.SetState(AntState.Searching);
+
+                //Thread thread = new Thread(() => SetDestinationQueue(ant));
+                //thread.Start();
                 Task.Factory.StartNew(() =>
                 {
-                    //if (antNavigationSemaphore.WaitOne())
-                    //{
-                        ant.SetCurrentDestination(nectarBag);
-                        //antNavigationSemaphore.Release();
-                    //}
+                    SetDestinationQueue(ant);
                 });
             }
 
+        }
+
+        private void SetDestinationQueue(AntObject ant)
+        {
+            antNavigationSemaphore.Wait();
+            ant.SetCurrentDestination(nectarBag);
+            if(ant.GetState() == AntState.Searching)
+            {
+                ant.SetState(AntState.Idle);
+            }
+            antNavigationSemaphore.Release();
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)

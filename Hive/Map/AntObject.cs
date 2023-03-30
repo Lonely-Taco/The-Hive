@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hive.Map
@@ -22,7 +23,7 @@ namespace Hive.Map
 
         public event EventHandler OnStateChanged;
 
-        public AntObject(int speed, Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(mapCoordinates, texture, position)
+        public AntObject(int speed,Texture2D texture, Vector2 position) : base(texture, position)
         {
             this.speed = speed;
             _state = AntState.Idle;
@@ -40,7 +41,7 @@ namespace Hive.Map
 
             foreach (NectarObject nectarObject in nectarObjects.Values)
             {
-                var distance = Vector2.Distance(nectarObject.GetMapCoordinates(), this.GetMapCoordinates());
+                var distance = Vector2.Distance(nectarObject.Position, this.Position);
                 
                 if (distance < shortestDistance)
                 {
@@ -59,32 +60,35 @@ namespace Hive.Map
 
         public void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
-            NectarObject nectar = GetNearestNectar(nectarObjects);
-            if (nectar != null)
+            Random rnd = new Random();
+            //Thread.Sleep(rnd.Next(1000));
+            currentTarget = GetNearestNectar(nectarObjects);
+            Vector2? currentDestination = currentTarget?.Position;
+            if(currentDestination.HasValue)
             {
-                currentDestination = nectar.Position;
-                currentDirection = currentDestination.Value - Position;
-                currentTarget = nectar;
-                currentDirection.Normalize();
+                this.currentDestination = currentDestination.Value;
+                this.currentDirection = currentDestination.Value - Position;
+                this.currentDirection.Normalize();
                 SetState(AntState.Moving);
-                return;
             }
-
-            currentDirection = Vector2.Zero;
+            else
+            {
+                currentTarget = null;
+            }
         }
 
         public void Move()
         {
-            if (currentTarget == null)
+            if (currentDestination == null)
             {
                 return;
             }
 
             Position += currentDirection * speed;
 
-            if (Vector2.Distance(Position, currentDestination.Value) < 1f)
+            if (Vector2.Distance(Position, currentDestination.Value) < 2f)
             {
-                currentTarget.Claim();
+                Task.Factory.StartNew(currentTarget.Claim);
                 SetState(AntState.Idle);
             }
         }
@@ -96,6 +100,21 @@ namespace Hive.Map
         {
             if (newState == _state) return;
             _state = newState;
+
+            switch (newState)
+            {
+                case AntState.Idle:
+                    ResetTarget();
+                    break;
+                case AntState.Searching:
+
+                    break;
+                case AntState.Moving:
+
+                    break;
+                default: break;
+            }
+
             OnStateChanged.Invoke(this, EventArgs.Empty);
         }
 

@@ -9,7 +9,7 @@ namespace Hive.Drops
 {
     public interface IDropBehaviour
     {
-        public Task<int> Claim(Counter nectarCounter, DropManager dropManager);
+        public Task<int> Claim(Counter nectarCounter);
 
     }
 }

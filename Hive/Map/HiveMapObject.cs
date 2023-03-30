@@ -11,16 +11,10 @@ namespace Hive.Map
 {
     public abstract class HiveMapObject : DrawnEntity
     {
-        protected Vector2 mapCoordinates;
 
-        protected HiveMapObject(Vector2 mapCoordinates, Texture2D texture, Vector2 position) : base(texture, position, 1f)
+        protected HiveMapObject(Texture2D texture, Vector2 position) : base(texture, position, 1f)
         {
-            this.mapCoordinates = mapCoordinates;
         }
 
-        public Vector2 GetMapCoordinates()
-        {
-            return this.mapCoordinates;   
-        }
     }
 }
