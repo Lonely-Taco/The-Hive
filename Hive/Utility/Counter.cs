@@ -64,7 +64,7 @@ namespace Hive.Utility
             int oldCount = count;
             count = Math.Min(count * 2, count + 20);
             semaphore.Release();
-            return oldCount;
+            return count - oldCount;
         }
 
         public async Task ResetCount()

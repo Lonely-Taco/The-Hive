@@ -18,7 +18,7 @@ namespace Hive.Drops
         private ConcurrentDictionary<Guid, NectarDrop> dropList = new ConcurrentDictionary<Guid, NectarDrop>();
         private ConcurrentDictionary<Guid, EventText> eventTexts = new ConcurrentDictionary<Guid, EventText>();
         private float elapsedDropSpawnTime = 0;
-        private float _dropSpawnTimeInterval = 0.1f;
+        private float _dropSpawnTimeInterval = 1f;
 
         private Texture2D dropTexture;
 
@@ -49,8 +49,8 @@ namespace Hive.Drops
             if (chance <= dropChance)
             {
                 Vector2 spawnCoords = new Vector2(
-                    rnd.Next((int)(HiveGame.screenSizeX * 0.5f), (int)(HiveGame.screenSizeX * 0.5f)),
-                    rnd.Next((int)(HiveGame.screenSizeY * 0.5f), (int)(HiveGame.screenSizeY * 0.5f)));
+                    rnd.Next((int)(HiveGame.screenSizeX * 0.1f), (int)(HiveGame.screenSizeX * 0.9f)),
+                    rnd.Next((int)(HiveGame.screenSizeY * 0f), (int)(HiveGame.screenSizeY * 0.5f)));
                 IDropBehaviour dropBehaviour;
                 if (chance <= goldenDropChance)
                 {
