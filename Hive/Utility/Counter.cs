@@ -55,7 +55,6 @@ namespace Hive.Utility
             count += value;
             semaphore.Release();
             return value;
-            
         }
 
         public async Task<int> DoubleOrAdd20Nectar()

@@ -58,7 +58,7 @@ public class SettingsState : State
 
         colorSettings = new List<ColorSetting> { 
             new ColorSetting("Black", new Vector3(0, 0, 0)),
-            new ColorSetting("Blue", new Vector3(10, 10, 250)),
+            new ColorSetting("Blue", new Vector3(0, 0, 255)),
             new ColorSetting("Yellow", new Vector3(255, 255, 0))
         };
 

@@ -14,6 +14,7 @@ namespace Hive.Utility
         public Texture2D mapTexture;
         public Texture2D backgroundTexture;
         public Texture2D antTexture;
+        public Texture2D antMapTexture;
         public Texture2D counterTexture;
         public Texture2D buyButtonTexture;
         public Texture2D containerTexture;
@@ -32,7 +33,8 @@ namespace Hive.Utility
             shopTexture                = game.Content.Load<Texture2D>("Textures/Missing");
             mapTexture                 = game.Content.Load<Texture2D>("Textures/AntMap");
             backgroundTexture          = game.Content.Load<Texture2D>("Textures/Background");
-            antTexture                 = game.Content.Load<Texture2D>("Textures/Ant");
+            antMapTexture              = game.Content.Load<Texture2D>("Textures/Ant");
+            antTexture                 = game.Content.Load<Texture2D>("Textures/AntIcon");
             counterTexture             = game.Content.Load<Texture2D>("Textures/Missing");
             buyButtonTexture           = game.Content.Load<Texture2D>("Textures/BuyButton");
             menuButtonTexture          = game.Content.Load<Texture2D>("Textures/MenuButton");

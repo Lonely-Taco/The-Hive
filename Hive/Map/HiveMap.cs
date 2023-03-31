@@ -95,7 +95,7 @@ namespace Hive.Map
             Random rnd = new Random();
             var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X),
                                              rnd.Next((int)Position.Y, height + (int)Position.Y));
-            AntObject antObject = new AntObject(antSpeed, content.antTexture, antCoordinates, antColor);
+            AntObject antObject = new AntObject(antSpeed, content.antMapTexture, antCoordinates, antColor);
             antObject.OnStateChanged += AntOnStateChanged;
             antBag.TryAdd(antObject.GetGuid(), antObject);
             antIdleBag.TryAdd(antObject.GetGuid(), antObject);
