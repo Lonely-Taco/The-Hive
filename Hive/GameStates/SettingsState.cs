@@ -51,6 +51,8 @@ public class SettingsState : State
                                      .12f * scale
         );
         submitButton.Click += SubmitButtonOnClick;
+        addButton.Click += AddButtonOnClick;
+        subtracttButton.Click += SubstractButtonOnClick;
 
 
         entities.Add(menuBackground);
@@ -63,6 +65,16 @@ public class SettingsState : State
     {
         Task.Factory.StartNew(ExecuteState);
     }
+
+    private void AddButtonOnClick(object sender, EventArgs e)
+    {
+        semaphoreAmount += 1;
+    }
+    private void SubstractButtonOnClick(object sender, EventArgs e)
+    {
+        semaphoreAmount = Math.Max(semaphoreAmount - 1, 0);
+    }
+
 
     public override void Update(GameTime gameTime)
     {
@@ -82,7 +94,7 @@ public class SettingsState : State
         }
 
         spriteBatch.DrawString(font,
-                               "Semaphore",
+                               "Semaphore: " + semaphoreAmount.ToString(),
                                new Vector2(game.ScreenSizeX * .25f, game.ScreenSizeY * .35f),
                                Color.Black,
                                0f,
