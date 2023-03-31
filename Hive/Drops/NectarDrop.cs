@@ -16,6 +16,7 @@ namespace Hive.Drops
         protected Counter nectarCounter;
         private float fallSpeed = 0;
         private IDropBehaviour dropBehaviour;
+        private Color nectarEventTextColor;
 
         public NectarDrop(Counter nectarCounter, Texture2D texture, Vector2 position, DropManager dropManager, IDropBehaviour dropBehaviour) : base(texture, position, 1f)
         {
@@ -42,19 +43,16 @@ namespace Hive.Drops
         {
             var currentPos = Position;
 
-            currentPos.Y += fallSpeed * (float) gameTime.ElapsedGameTime.TotalSeconds;
+            currentPos.Y += fallSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            Position= currentPos;
+            Position = currentPos;
 
-            if(currentPos.Y > HiveGame.screenSizeY) 
-            { 
+            if (currentPos.Y > HiveGame.screenSizeY)
+            {
                 dropManager.RemoveDrop(this);
             }
 
             base.Update(gameTime);
         }
-
-        
-
     }
 }

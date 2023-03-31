@@ -12,14 +12,15 @@ namespace Hive.GameStates;
 public class GameState : State
 {
     private DrawnEntity sceneBackground;
-    private Button      settingsButton;
+    private Button settingsButton;
 
-    public GameState(Vector2 position, float scale, List<IEntity> entities, HiveGame game) :
+    public GameState(Vector2 position, float scale, List<IEntity> entities, HiveGame game, Texture2D settingButtonTexture) :
         base(position, scale, entities, game)
     {
         sceneBackground = new DrawnEntity(sceneBackgroundTexture,
                                           new Vector2(0, 0),
-                                          scale);
+                                          scale,
+                                          null);
 
         settingsButton = new Button(settingButtonTexture,
                                     position + new Vector2(game.ScreenSizeX * .88f, game.ScreenSizeY * .1f),

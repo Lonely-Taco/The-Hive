@@ -9,10 +9,9 @@ namespace Hive.GameStates;
 public abstract class State : DrawnEntity
 {
     protected static SpriteFont font;
-    protected static Texture2D  menuButtonTexture;
+    protected static Texture2D  buttonTexture;
     protected static Texture2D  menuBackgroundTexture;
     protected static Texture2D  sceneBackgroundTexture;
-    protected static Texture2D  settingButtonTexture;
 
     private List<IEntity> entities = new();
 
@@ -31,7 +30,7 @@ public abstract class State : DrawnEntity
     }
 
     protected State(Vector2 position, float scale, List<IEntity> entities, HiveGame game) : base(
-        menuBackgroundTexture, position, 0.2f * scale)
+        menuBackgroundTexture, position, scale)
     {
         this.entities = entities;
         this.game     = game;
@@ -39,13 +38,12 @@ public abstract class State : DrawnEntity
 
 
     public static void Initialize(SpriteFont fontSprite, Texture2D buttonTexture, Texture2D backgroundTexture,
-                                  Texture2D sceneTexture, Texture2D settingButtonTexture)
+                                  Texture2D sceneTexture)
     {
         font                       = fontSprite;
         menuBackgroundTexture      = backgroundTexture;
-        menuButtonTexture          = buttonTexture;
+        State.buttonTexture        = buttonTexture;
         sceneBackgroundTexture     = sceneTexture;
-        State.settingButtonTexture = settingButtonTexture;
     }
 
     public abstract Task ExecuteState();

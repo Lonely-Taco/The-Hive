@@ -12,7 +12,7 @@ namespace Hive.Map
     public abstract class HiveMapObject : DrawnEntity
     {
 
-        protected HiveMapObject(Texture2D texture, Vector2 position) : base(texture, position, 1f)
+        protected HiveMapObject(Texture2D texture, Vector2 position, Color? color = null) : base(texture, position, 1f, color)
         {
         }
 

@@ -9,7 +9,7 @@ namespace Hive.Drops.DropBehaviour
     {
         public async Task<int> Claim(Counter nectarCounter)
         {
-            int addedNectar = await nectarCounter.DoubleNectar();
+            int addedNectar = await nectarCounter.DoubleOrAdd20Nectar();
             return addedNectar;
         }
     }

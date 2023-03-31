@@ -9,7 +9,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -36,10 +35,11 @@ namespace Hive.Map
 
         private int width;
         private int height;
-        private int antSpeed = 1;
+        private int antSpeed = 3;
         private float dropChance;
 
-        private const int MAX_ANT_NAV_TASKS = 10;
+        private Color antColor = Color.Black;
+        private const int MAX_ANT_NAV_TASKS = 100;
 
         private float DropSpawnTimeInterval
         {
@@ -81,7 +81,8 @@ namespace Hive.Map
 
             if (chance <= dropChance)
             {
-                Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
+                Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X),
+                                                rnd.Next((int)Position.Y, height + (int)Position.Y));
                 NectarObject nectar = new NectarObject(this.content.nectarTexture, nectarCoordinates, nectarCounter, new NectarMapObjectDropBehaviour(expansionCounter));
                 nectarBag.TryAdd(nectar.GetGuid(), nectar);
                 nectar.onClaim += OnNectarClaim;
@@ -91,8 +92,9 @@ namespace Hive.Map
         public void SpawnAnt()
         {
             Random rnd = new Random();
-            var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-            AntObject antObject = new AntObject(antSpeed, content.antTexture, antCoordinates);
+            var antCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X),
+                                             rnd.Next((int)Position.Y, height + (int)Position.Y));
+            AntObject antObject = new AntObject(antSpeed, content.antTexture, antCoordinates, antColor);
             antObject.OnStateChanged += AntOnStateChanged;
             antBag.TryAdd(antObject.GetGuid(), antObject);
             antIdleBag.TryAdd(antObject.GetGuid(), antObject);
@@ -100,8 +102,8 @@ namespace Hive.Map
 
         private void AntOnStateChanged(object sender, EventArgs e)
         {
-            AntObject ant = (AntObject) sender;
-            switch(ant.GetState())
+            AntObject ant = (AntObject)sender;
+            switch (ant.GetState())
             {
                 case AntState.Idle:
                     antIdleBag.TryAdd(ant.GetGuid(), ant);
@@ -112,15 +114,13 @@ namespace Hive.Map
                 case AntState.Moving:
                     break;
                 default: break;
-
             }
         }
 
         private void OnNectarClaim(object sender, EventArgs e)
         {
-            NectarObject nectar = (NectarObject) sender;
+            NectarObject nectar = (NectarObject)sender;
             nectarBag.TryRemove(nectar.GetGuid(), out _);
-
         }
 
         public void MoveAllAnts(ConcurrentDictionary<Guid, NectarObject> nectarList)
@@ -138,6 +138,7 @@ namespace Hive.Map
                 SpawnNectar();
                 elapsedDropSpawnTime = 0;
             }
+
             elapsedDropSpawnTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
             SetDestinations();
 
@@ -147,7 +148,6 @@ namespace Hive.Map
             {
                 ant.Value.Update(gameTime);
             }
-
         }
 
         private void SetDestinations()
@@ -172,7 +172,7 @@ namespace Hive.Map
         {
             antNavigationSemaphore.Wait();
             ant.SetCurrentDestination(nectarBag);
-            if(ant.GetState() == AntState.Searching)
+            if (ant.GetState() == AntState.Searching)
             {
                 ant.SetState(AntState.Idle);
             }
@@ -191,7 +191,6 @@ namespace Hive.Map
             {
                 nectar.Value.Draw(gameTime, spriteBatch);
             }
-
         }
     }
 }

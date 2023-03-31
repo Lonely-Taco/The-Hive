@@ -58,11 +58,11 @@ namespace Hive.Utility
             
         }
 
-        public async Task<int> DoubleNectar()
+        public async Task<int> DoubleOrAdd20Nectar()
         {
             await semaphore.WaitAsync();
             int oldCount = count;
-            count = Math.Min(count * 2, 20);
+            count = Math.Min(count * 2, count + 20);
             semaphore.Release();
             return oldCount;
         }

@@ -1,13 +1,12 @@
-﻿using Hive.Drops;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Hive.Map
 {
@@ -23,7 +22,7 @@ namespace Hive.Map
 
         public event EventHandler OnStateChanged;
 
-        public AntObject(int speed,Texture2D texture, Vector2 position) : base(texture, position)
+        public AntObject(int speed, Texture2D texture, Vector2 position, Color antColor) : base(texture, position, antColor)
         {
             this.speed = speed;
             _state = AntState.Idle;
@@ -34,15 +33,15 @@ namespace Hive.Map
             float shortestDistance = float.MaxValue;
             NectarObject nearestNectar = null;
 
-            if (currentTarget!= null)
+            if (currentTarget != null)
             {
-                return currentTarget;  
+                return currentTarget;
             }
 
             foreach (NectarObject nectarObject in nectarObjects.Values)
             {
                 var distance = Vector2.Distance(nectarObject.Position, this.Position);
-                
+
                 if (distance < shortestDistance)
                 {
                     shortestDistance = distance;
@@ -61,10 +60,10 @@ namespace Hive.Map
         public void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
             Random rnd = new Random();
-            Thread.Sleep(rnd.Next(3000));
+            Thread.Sleep(rnd.Next(5000));
             currentTarget = GetNearestNectar(nectarObjects);
             Vector2? currentDestination = currentTarget?.Position;
-            if(currentDestination.HasValue)
+            if (currentDestination.HasValue)
             {
                 this.currentDestination = currentDestination.Value;
                 this.currentDirection = currentDestination.Value - Position;

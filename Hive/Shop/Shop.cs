@@ -30,16 +30,17 @@ namespace Hive.Shops
 
         public event EventHandler OnBuy;
 
-        protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter, float scale) : base(Shop.backgroundTexture, position, 0.2f * scale)
+        protected Shop(Texture2D icon, Counter nectarCounter, Vector2 position, Counter counter, float scale) : base(
+            Shop.backgroundTexture, position, 0.2f * scale)
         {
             this.icon = new DrawnEntity(icon, position + iconOffset, 0.9f * scale);
             this.nectarCounter = nectarCounter;
             this.buyButton = new Button(buttonTexture, position + buyButtonOffset, "+1", font, 0.13f * scale);
             this.costIcon = new DrawnEntity(nectarTexture, position + costIconOffset, 0.9f * scale);
-            this.costBackground = new DrawnEntity(costBackgroundTexture, position + costBackgroundOffset, scale * 0.38f);
+            this.costBackground =
+                new DrawnEntity(costBackgroundTexture, position + costBackgroundOffset, 0.38f * scale);
             this.counter = counter;
             buyButton.Click += OnClick;
-
         }
 
         protected void OnClick(object sender, EventArgs e)
@@ -65,7 +66,8 @@ namespace Hive.Shops
             costBackground.Draw(gameTime, spriteBatch);
             costIcon.Draw(gameTime, spriteBatch);
             //Cost string
-            spriteBatch.DrawString(font, CurrentCost().ToString() , Position + costTextOffset, Color.Black, 0f, Vector2.Zero, scale * 5, SpriteEffects.None, 1);
+            spriteBatch.DrawString(font, CurrentCost().ToString(), Position + costTextOffset, Color.Black, 0f,
+                                   Vector2.Zero, scale * 5, SpriteEffects.None, 1);
             buyButton.Draw(gameTime, spriteBatch);
         }
 
@@ -74,7 +76,8 @@ namespace Hive.Shops
             buyButton.Update(gameTime);
         }
 
-        public static void Initialize(SpriteFont font, Texture2D buttonTexture, Texture2D nectarTexture, Texture2D backgroundTexture, Texture2D costBackgroundTexture)
+        public static void Initialize(SpriteFont font, Texture2D buttonTexture, Texture2D nectarTexture,
+                                      Texture2D backgroundTexture, Texture2D costBackgroundTexture)
         {
             Shop.font = font;
             Shop.buttonTexture = buttonTexture;
@@ -83,6 +86,5 @@ namespace Hive.Shops
 
             Shop.costBackgroundTexture = costBackgroundTexture;
         }
-
     }
 }

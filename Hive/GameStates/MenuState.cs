@@ -16,9 +16,9 @@ public class MenuState : State
 
     protected DrawnEntity menuBackground;
     protected DrawnEntity sceneBackground;
-    protected Button      playButton;
-    protected Button      settingsButton;
-    protected Button      exitButton;
+    protected Button playButton;
+    protected Button settingsButton;
+    protected Button exitButton;
 
     #endregion
 
@@ -28,40 +28,43 @@ public class MenuState : State
     {
         sceneBackground = new DrawnEntity(sceneBackgroundTexture,
                                           new Vector2(0, 0),
-                                          scale);
+                                          scale,
+                                          null);
         entities.Add(sceneBackground);
-        
+
         menuBackground = new DrawnEntity(menuBackgroundTexture,
-                                         new Vector2(game.ScreenSizeX * .25f, game.ScreenSizeY * .25f),
-                                         .65f * scale);
+                                         new Vector2(game.ScreenSizeX * .2f, game.ScreenSizeY * .25f),
+                                         scale,
+                                         null);
         entities.Add(menuBackground);
-        
-        
-        playButton = new Button(menuButtonTexture,
+
+        playButton = new Button(buttonTexture,
                                 position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .10f),
                                 "Start",
                                 font,
                                 .20f * scale
         );
         entities.Add(playButton);
-        
-        settingsButton = new Button(menuButtonTexture,
+
+        settingsButton = new Button(buttonTexture,
                                     position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .20f),
                                     "Config",
                                     font,
                                     .20f * scale);
         entities.Add(settingsButton);
-        
-        exitButton = new Button(menuButtonTexture,
+
+        exitButton = new Button(buttonTexture,
                                 position + new Vector2(game.ScreenSizeX * .3f, game.ScreenSizeY * .30f),
                                 "Exit",
                                 font,
                                 .20f * scale);
         entities.Add(exitButton);
-        
-        playButton.Click     += PlayButtonOnClick;
+
+        playButton.Click += PlayButtonOnClick;
         settingsButton.Click += SettingsButtonOnClick;
-        exitButton.Click     += ExitButtonOnClick;
+        exitButton.Click += ExitButtonOnClick;
+
+        
     }
 
     private void ExitButtonOnClick(object sender, EventArgs e)
@@ -71,7 +74,12 @@ public class MenuState : State
 
     private void SettingsButtonOnClick(object sender, EventArgs e)
     {
-        Debug.WriteLine("Ive been clicked");
+        Task.Factory.StartNew(ChangeScene);
+    }
+
+    private void ChangeScene()
+    {
+        game.ChangeState(game.SettingState);
     }
 
     private void PlayButtonOnClick(object sender, EventArgs e)
@@ -90,14 +98,14 @@ public class MenuState : State
         {
             entity.Draw(gameTime, spriteBatch);
         }
-        
+
         spriteBatch.DrawString(font,
                                "HIVE",
                                new Vector2(game.ScreenSizeX * .30f, game.ScreenSizeY * .30f),
                                Color.Black,
                                0f,
                                Vector2.Zero,
-                               scale * 6,
+                               scale * 4,
                                SpriteEffects.None,
                                1);
     }
@@ -110,8 +118,9 @@ public class MenuState : State
         }
     }
 
-    public override async Task ExecuteState()
+    public override Task ExecuteState()
     {
         game.ChangeState(game.GameState);
+        return Task.CompletedTask;
     }
 }

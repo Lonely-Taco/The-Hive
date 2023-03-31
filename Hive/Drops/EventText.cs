@@ -19,7 +19,7 @@ namespace Hive.Drops
 
         private static SpriteFont font;
 
-        public EventText(Vector2 position, float scale, string text, Color color, float fadeOutSpeed, DropManager dropManager) : base(null, position, scale)
+        public EventText(Vector2 position, float scale, string text, Color color, float fadeOutSpeed, DropManager dropManager) : base(null, position, scale, color)
         {
             this.text = text;
             this.color = color;

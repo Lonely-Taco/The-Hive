@@ -10,6 +10,7 @@ using Hive.Utility;
 using System.Drawing;
 using Color = Microsoft.Xna.Framework.Color;
 using System.Diagnostics;
+using System.IO;
 using Hive.GameStates;
 
 namespace Hive
@@ -30,6 +31,7 @@ namespace Hive
         private DropManager           dropManager;
         private State                 currentState;
         private State                 nextState;
+        private State                 previousState;
         private MenuState             menuState;
         private GameState             gameState;
         private SettingsState         settingState;
@@ -94,8 +96,7 @@ namespace Hive
                 contentLoader.counterFont,
                 contentLoader.menuButtonTexture,
                 contentLoader.menuBackgroundTexture,
-                contentLoader.menuSceneBackgroundTexture,
-                contentLoader.settingsButtonTexture
+                contentLoader.menuSceneBackgroundTexture
             );
 
             antCounter       = new Counter(new Vector2(0, 0), contentLoader.antTexture, 1f);
@@ -108,21 +109,21 @@ namespace Hive
                                   new Vector2(788, 218), contentLoader, this, nectarCounter, expansionCounter);
             dropManager = new DropManager(nectarCounter, contentLoader.nectarTexture);
 
-            gameState = new GameState(new Vector2(0, 0), 1f,
-                                      new List<IEntity>
-                                      {
-                                          this.antCounter,
-                                          this.nectarCounter,
-                                          this.expansionCounter,
-                                          this.antShop,
-                                          this.expansionShop,
-                                          this.hiveMap,
-                                          this.dropManager,
-                                      },
-                                      game: this
-            );
+            List<IEntity> gameStateEntityList = 
+                new List<IEntity>
+                {
+                    this.antCounter,
+                    this.nectarCounter,
+                    this.expansionCounter,
+                    this.antShop,
+                    this.expansionShop,
+                    this.hiveMap,
+                    this.dropManager,
+                };
 
-            this.menuState = new MenuState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
+            this.gameState = new GameState(new Vector2(0, 0), 1f, gameStateEntityList, this, contentLoader.settingsButtonTexture);
+            this.menuState    = new MenuState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
+            this.settingState = new SettingsState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
 
             currentState = menuState;
         }
@@ -151,7 +152,13 @@ namespace Hive
 
         public void ChangeState(State state)
         {
-            nextState = state;
+            previousState = currentState;
+            nextState     = state;
+
+            if (previousState == SettingState)
+            {
+                nextState = menuState;
+            }
         }
 
         protected override void Update(GameTime gameTime)
