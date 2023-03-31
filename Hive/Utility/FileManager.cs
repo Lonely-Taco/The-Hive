@@ -45,11 +45,7 @@ public static class FileManager
     {
         if (path != string.Empty && fileName != string.Empty)
         {
-            var data = new SaveData()
-            {
-                semaphores = sempahoreCount,
-                antcolor = antColor.ToString()
-            };
+            var data = new SaveData(sempahoreCount, antColor.ToString());
             string myDeserializedClass = JsonConvert.SerializeObject(data);
 
             await File.WriteAllTextAsync(FileString, myDeserializedClass);
@@ -92,6 +88,12 @@ public static class FileManager
 [Serializable]
 public class SaveData
 {
+    public SaveData(int semaphores, string antcolor)
+    {
+        this.semaphores = semaphores;
+        this.antcolor = antcolor;
+    }
+
     public int semaphores { get; set; }
     public string antcolor { get; set; }
 }

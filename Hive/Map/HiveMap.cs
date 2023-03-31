@@ -1,6 +1,7 @@
 ﻿using Hive.Common;
 using Hive.Drops;
 using Hive.Drops.DropBehaviour;
+using Hive.GameStates;
 using Hive.Shops;
 using Hive.Utility;
 using Microsoft.Xna.Framework;
@@ -39,7 +40,7 @@ namespace Hive.Map
         private float dropChance;
 
         private Color antColor = Color.Black;
-        private const int MAX_ANT_NAV_TASKS = 100;
+        private int semaphoreCount = 100;
 
         private float DropSpawnTimeInterval
         {
@@ -64,7 +65,7 @@ namespace Hive.Map
             this.antShop = game.AntShop;
             this.antShop.OnBuy += AntOnBuy;
             this.expansionShop = game.ExpansionShop;
-            this.antNavigationSemaphore = new SemaphoreSlim(MAX_ANT_NAV_TASKS);
+            this.antNavigationSemaphore = new SemaphoreSlim(semaphoreCount);
             this.nectarCounter = nectarCounter;
             this.expansionCounter = expansionCounter;
         }
@@ -191,6 +192,12 @@ namespace Hive.Map
             {
                 nectar.Value.Draw(gameTime, spriteBatch);
             }
+        }
+
+        public void SetSettings(SettingData settings)
+        {
+            this.antNavigationSemaphore = new SemaphoreSlim(settings.semaphoreAmount);
+            this.antColor = settings.antColor;
         }
     }
 }

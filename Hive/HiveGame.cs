@@ -35,7 +35,7 @@ namespace Hive
         private MenuState             menuState;
         private GameState             gameState;
         private SettingsState         settingState;
-
+        private SettingData           settings;
         public static int screenSizeX = 1300;
         public static int screenSizeY = 730;
 
@@ -64,6 +64,7 @@ namespace Hive
             _graphics             = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible        = true;
+            settings              = new SettingData(10, Color.Black);
         }
 
         protected override void Initialize()
@@ -123,7 +124,7 @@ namespace Hive
 
             this.gameState = new GameState(new Vector2(0, 0), 1f, gameStateEntityList, this, contentLoader.settingsButtonTexture);
             this.menuState    = new MenuState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
-            this.settingState = new SettingsState(new Vector2(150, 150), 1, new List<IEntity>(), game: this);
+            this.settingState = new SettingsState(new Vector2(150, 150), 1, new List<IEntity>(), game: this, settings);
 
             currentState = menuState;
         }
@@ -150,10 +151,16 @@ namespace Hive
             nextState    = null;
         }
 
+        public void ChangeState(State state, SettingData settings)
+        {
+            ChangeState(state);
+            settingState.SetSettings(settings);
+            hiveMap.SetSettings(settings);
+        }
         public void ChangeState(State state)
         {
             previousState = currentState;
-            nextState     = state;
+            nextState = state;
 
             if (previousState == SettingState)
             {
