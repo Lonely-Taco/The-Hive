@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Threading.Tasks;
 
-namespace Hive.Drops
+namespace Hive.Drops.DropBehaviour
 {
     internal class RegularNectarDropBehaviour : IDropBehaviour
     {

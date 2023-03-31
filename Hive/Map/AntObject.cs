@@ -61,7 +61,7 @@ namespace Hive.Map
         public void SetCurrentDestination(ConcurrentDictionary<Guid, NectarObject> nectarObjects)
         {
             Random rnd = new Random();
-            //Thread.Sleep(rnd.Next(1000));
+            Thread.Sleep(rnd.Next(3000));
             currentTarget = GetNearestNectar(nectarObjects);
             Vector2? currentDestination = currentTarget?.Position;
             if(currentDestination.HasValue)

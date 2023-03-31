@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Threading.Tasks;
 
-namespace Hive.Drops
+namespace Hive.Drops.DropBehaviour
 {
     internal class GoldenNectarDropBehaviour : IDropBehaviour
     {

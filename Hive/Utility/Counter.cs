@@ -62,7 +62,7 @@ namespace Hive.Utility
         {
             await semaphore.WaitAsync();
             int oldCount = count;
-            count = count * 2;
+            count = Math.Min(count * 2, 20);
             semaphore.Release();
             return oldCount;
         }

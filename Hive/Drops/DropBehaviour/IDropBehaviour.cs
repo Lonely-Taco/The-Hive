@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hive.Drops
+namespace Hive.Drops.DropBehaviour
 {
     public interface IDropBehaviour
     {

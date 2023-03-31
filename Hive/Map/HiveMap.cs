@@ -1,5 +1,6 @@
 ﻿using Hive.Common;
 using Hive.Drops;
+using Hive.Drops.DropBehaviour;
 using Hive.Shops;
 using Hive.Utility;
 using Microsoft.Xna.Framework;
@@ -35,7 +36,7 @@ namespace Hive.Map
 
         private int width;
         private int height;
-        private int antSpeed = 3;
+        private int antSpeed = 1;
         private float dropChance;
 
         private const int MAX_ANT_NAV_TASKS = 10;
@@ -81,7 +82,7 @@ namespace Hive.Map
             if (chance <= dropChance)
             {
                 Vector2 nectarCoordinates = new Vector2(rnd.Next((int)Position.X, width + (int)Position.X), rnd.Next((int)Position.Y, height + (int)Position.Y));
-                NectarObject nectar = new NectarObject(this.content.nectarTexture, nectarCoordinates, nectarCounter, new RegularNectarDropBehaviour());
+                NectarObject nectar = new NectarObject(this.content.nectarTexture, nectarCoordinates, nectarCounter, new NectarMapObjectDropBehaviour(expansionCounter));
                 nectarBag.TryAdd(nectar.GetGuid(), nectar);
                 nectar.onClaim += OnNectarClaim;
             }

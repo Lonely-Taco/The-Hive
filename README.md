@@ -33,21 +33,20 @@ The hive map shows all owned ants and automatically collects nectar that spawns 
 # Threading techniques:
 The Hive game will make use of the following threading techniques:
 
-## Mutex for counters
+## Locks for ensuring nectar doesn’t get claimed twice
+To ensure that two ants cannot claim the same nectar object, locks will be used to ensure that nectar can only be claimed by one ant.
 
-* To make sure that the counter remains correct, a mutex will be implemented for all counters. The mutex will freeze changes to the counter until the previous calculations are all done. This will ensure that no race conditions occur when multiple threads try to access the counters at the same time.
-Tasks for ant finding the nearest nectar drop on the hive map.
+## Tasks for buttons, ant finding pathfinding and ants claiming nectar
+Tasks will be used for handling events triggered by button clicks. These buttons include buying from shops and claiming nectar drops.
 
-## Tasks for ants!
+Tasks will also be used to both orient the ants in the correct direction to their nearest nectar and for claiming the nectar. This calculation for orienting ants is fairly simple, but using tasks will allow the calculation to happen without freezing the game's UI. In addition, this approach can be expanded upon to support more complicated path-finding algorithms in the future.
 
-* Tasks will be used to orient the ants in the correct direction to the nectar. This calculation is fairly simple, but using tasks will allow it to be performed asynchronously in the background without freezing the game's UI. In addition, this approach can be expanded upon to support more complicated path-finding algorithms in the future.
+## Semaphore for counters and for managing ant pathfinding. 
+To make sure that the counter remains correct, a binary semaphore (a semaphore with a size of one) will be implemented for all counters. The semaphore will freeze changes to the counter until the previous calculations are all done. This will ensure that no race conditions occur when multiple threads try to access the counters at the same time. A semaphore was chosen above a mutex as mutexes cannot be used asynchronously.
 
-## Semahores on the map
+The number of tasks for the hive map will also be limited by a semaphore. This way, not too many calculations for tasks will be done at the same time, keeping the requirements of running The Hive low. Ants will have to wait until there is room in the semaphore if the semaphore is full. In the settings the semaphore count can be altered.
 
-* Semaphore for map. Increase allowed number of threads through upgrades.
-The number of tasks for the hive map will be limited by a semaphore. This way, not too many calculations for tasks will be done at the same time, keeping the requirements of running The Hive low. Ants will have to wait until there is room in the semaphore if the semaphore is full. In the menu the semaphore count can be altered.
+## Async I/O for saving the settings page
+In the settings page the semaphore number and ant color will be set. Saving will transport these settings to a local file which will be retrievable. Writing and reading to and from this file will be done with async I/O so the application doesn’t stall
 
-## Async I/O
-
-* In the settings page the semaphore number and ant color will be set. Saving will transport these settings to a local file which will be retrievable. Writing and reading to and from this file will be done with async I/O so the application doesn’t stall
 
