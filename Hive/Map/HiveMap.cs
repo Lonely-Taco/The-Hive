@@ -36,11 +36,11 @@ namespace Hive.Map
 
         private int width;
         private int height;
-        private int antSpeed = 3;
+        private int antSpeed = 2;
         private float dropChance;
 
         private Color antColor = Color.Black;
-        private int semaphoreCount = 100;
+        private int semaphoreCount = 3;
 
         private float DropSpawnTimeInterval
         {

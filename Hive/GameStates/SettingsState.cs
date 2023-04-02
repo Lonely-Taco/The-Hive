@@ -77,21 +77,21 @@ public class SettingsState : State
                                new Vector2(game.ScreenSizeX * .35f, game.ScreenSizeY * .40f),
                                "Black",
                                font,
-                               .12f * scale
+                               .15f * scale
         );
 
         blueButton = new Button(buttonTexture,
                                 new Vector2(game.ScreenSizeX * .40f, game.ScreenSizeY * .40f),
                                 "Blue",
                                 font,
-                                .12f * scale
+                                .15f * scale
         );
 
         yellowButton = new Button(buttonTexture,
                                  new Vector2(game.ScreenSizeX * .45f, game.ScreenSizeY * .40f),
                                  "Yellow",
                                  font,
-                                 .12f * scale
+                                 .15f * scale
         );
 
         entities.Add(menuBackground);

@@ -64,7 +64,7 @@ namespace Hive
             _graphics             = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible        = true;
-            settings              = new SettingData(10, Color.Black);
+            settings              = new SettingData(3, Color.Black);
         }
 
         protected override void Initialize()
